@@ -4,7 +4,7 @@ import { OrbitControls, Environment, Stars } from '@react-three/drei';
 import Globe3D from './components/Globe3D';
 import UI from './components/UI';
 import ResponsiveLayout from './components/ResponsiveLayout';
-import { useResponsive } from './hooks/useResponsive';
+import useResponsive from './hooks/useResponsive';
 import './styles/App.css';
 
 function App({ onReady }) {

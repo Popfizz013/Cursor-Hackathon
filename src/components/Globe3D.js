@@ -1,6 +1,6 @@
 import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Sphere, MeshStandardMaterial } from '@react-three/drei';
+import { Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 
 const Globe3D = ({ deviceType }) => {
@@ -15,7 +15,7 @@ const Globe3D = ({ deviceType }) => {
 
   // Create earth-like material
   const earthMaterial = useMemo(() => {
-    return new MeshStandardMaterial({
+    return new THREE.MeshStandardMaterial({
       color: '#4a90e2',
       roughness: 0.8,
       metalness: 0.1,
