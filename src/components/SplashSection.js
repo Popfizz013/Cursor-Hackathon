@@ -10,9 +10,7 @@ const SplashWrapper = styled.section`
   padding: clamp(3rem, 8vw, 6rem);
   color: #ffffff;
   overflow: hidden;
-  background: radial-gradient(circle at 20% 20%, rgba(135, 206, 235, 0.15), transparent 55%),
-              radial-gradient(circle at 80% 30%, rgba(173, 216, 230, 0.1), transparent 60%),
-              linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 60%, #16213e 100%);
+  background: var(--space-gradient);
 `;
 
 const Glow = styled.div`
@@ -26,7 +24,7 @@ const Glow = styled.div`
   border-radius: 50%;
   background: radial-gradient(circle, rgba(135, 206, 235, 0.35), transparent 65%);
   filter: blur(60px);
-  opacity: 0.7;
+  opacity: 0.6;
   pointer-events: none;
 `;
 
@@ -35,8 +33,8 @@ const Starfield = styled.div`
   inset: 0;
   background-image: radial-gradient(rgba(255, 255, 255, 0.6) 1px, transparent 1px);
   background-size: 4px 4px;
-  opacity: 0.2;
-  animation: shimmer 12s linear infinite;
+  opacity: 0.18;
+  animation: shimmer 14s linear infinite;
 
   @keyframes shimmer {
     from {

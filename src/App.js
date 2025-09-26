@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback, Suspense, lazy } from 'react';
 import { Canvas, useThree, useFrame } from '@react-three/fiber';
-import { OrbitControls, Environment, Stars } from '@react-three/drei';
-import Globe3D from './components/Globe3D';
-import UI from './components/UI';
+import { OrbitControls, Stars } from '@react-three/drei';
 import ResponsiveLayout from './components/ResponsiveLayout';
-import SplashSection from './components/SplashSection';
+import PortfolioContainer from './components/PortfolioContainer';
 import useResponsive from './hooks/useResponsive';
 import './styles/App.css';
+
+const Globe3D = lazy(() => import('./components/Globe3D'));
+const UI = lazy(() => import('./components/UI'));
 
 function CameraLight() {
   const { camera } = useThree();
@@ -29,7 +30,9 @@ function CameraLight() {
 function App({ onReady }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [deviceType, setDeviceType] = useState('desktop');
-  const globeSectionRef = useRef(null);
+  const [activeChapter, setActiveChapter] = useState(null);
+  const [globeInfo, setGlobeInfo] = useState(null);
+  const [isGlobeEnabled, setIsGlobeEnabled] = useState(false);
   const { isMobile, isTablet, isDesktop } = useResponsive();
 
   useEffect(() => {
@@ -49,11 +52,31 @@ function App({ onReady }) {
     return () => clearTimeout(timer);
   }, [onReady]);
 
-  const handleExplore = () => {
-    if (globeSectionRef.current) {
-      globeSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  useEffect(() => {
+    // Automatically disable the 3D experience on mobile devices for stability
+    if (deviceType === 'mobile') {
+      setIsGlobeEnabled(false);
+    } else {
+      setIsGlobeEnabled(true);
     }
-  };
+  }, [deviceType]);
+
+  const handleSectionChange = useCallback(({ section, data, progress }) => {
+    setActiveChapter(section);
+    setGlobeInfo({ data, progress });
+  }, []);
+
+  const canvasProps = useMemo(() => ({
+    camera: {
+      position: [0, 0, 3],
+      fov: deviceType === 'mobile' ? 70 : 55
+    },
+    dpr: [1, deviceType === 'desktop' ? 1.75 : 1.25],
+    gl: {
+      antialias: false,
+      powerPreference: 'high-performance'
+    }
+  }), [deviceType]);
 
   if (!isLoaded) {
     return (
@@ -68,53 +91,68 @@ function App({ onReady }) {
 
   return (
     <div className="app">
-      <SplashSection deviceType={deviceType} onExplore={handleExplore} />
+      <PortfolioContainer deviceType={deviceType} onScrollChange={handleSectionChange} />
 
-      <section className="globe-section" ref={globeSectionRef}>
+      <section className={`globe-section ${isGlobeEnabled ? '' : 'globe-disabled'}`}>
         <ResponsiveLayout deviceType={deviceType} minHeight="100vh">
-          <Canvas
-            camera={{
-              position: [0, 0, 3],
-              fov: deviceType === 'mobile' ? 75 : 60
-            }}
-            style={{
-              background: 'linear-gradient(135deg, #050509 0%, #0f1b3d 50%, #020611 100%)'
-            }}
-          >
-            <CameraLight />
-            {/* Additional lighting setup */}
-            {/* eslint-disable react/no-unknown-property */}
-            <ambientLight intensity={0.4} />
-            <directionalLight
-              position={[5, 5, 5]}
-              intensity={1.5}
-              castShadow
-              shadow-mapSize-width={2048}
-              shadow-mapSize-height={2048}
-            />
-            <pointLight position={[-5, 5, 5]} intensity={0.8} color="#87ceeb" />
-            {/* eslint-enable react/no-unknown-property */}
-            <Environment preset="night" />
-            <Stars
-              radius={100}
-              depth={50}
-              count={deviceType === 'mobile' ? 1000 : 5000}
-              factor={4}
-              saturation={0}
-              fade
-            />
-            <Globe3D deviceType={deviceType} />
-            <OrbitControls
-              enablePan={false}
-              enableZoom={false}
-              enableRotate={false}
-              minDistance={deviceType === 'mobile' ? 3 : 2}
-              maxDistance={deviceType === 'mobile' ? 8 : 10}
-              autoRotate={deviceType === 'mobile'}
-              autoRotateSpeed={deviceType === 'mobile' ? 0.5 : 1}
-            />
-          </Canvas>
-          <UI deviceType={deviceType} />
+          {isGlobeEnabled ? (
+            <>
+              <Canvas
+                {...canvasProps}
+                style={{
+                  background: 'linear-gradient(135deg, #050509 0%, #0f1b3d 50%, #020611 100%)'
+                }}
+              >
+                <Suspense
+                  fallback={(
+                    <ambientLight intensity={0.4} /* eslint-disable-line react/no-unknown-property */ />
+                  )}
+                >
+                  {/* eslint-disable react/no-unknown-property */}
+                  <CameraLight />
+                  <ambientLight intensity={0.45} />
+                  <directionalLight
+                    position={[4, 5, 3]}
+                    intensity={1.1}
+                    color="#9ecfff"
+                  />
+                  <pointLight position={[-4, 3, 5]} intensity={0.6} color="#6aa7ff" />
+                  <Stars
+                    radius={80}
+                    depth={40}
+                    count={deviceType === 'desktop' ? 1600 : 600}
+                    factor={3}
+                    saturation={0}
+                    fade
+                  />
+                  <Globe3D deviceType={deviceType} activeChapter={activeChapter} info={globeInfo} />
+                  {/* eslint-enable react/no-unknown-property */}
+                </Suspense>
+                <OrbitControls
+                  enablePan={false}
+                  enableZoom={false}
+                  enableRotate={false}
+                  enableDamping
+                  dampingFactor={0.05}
+                  autoRotate={deviceType === 'mobile'}
+                  autoRotateSpeed={deviceType === 'mobile' ? 0.35 : 0.75}
+                />
+              </Canvas>
+              <Suspense fallback={null}>
+                <UI deviceType={deviceType} activeChapter={activeChapter} info={globeInfo} />
+              </Suspense>
+            </>
+          ) : (
+            <div className="globe-offline">
+              <div className="placeholder-content">
+                <h3>Lightweight Mode</h3>
+                <p>The 3D globe is disabled to keep the site responsive on this device.</p>
+                <button type="button" onClick={() => setIsGlobeEnabled(true)}>
+                  Enable 3D Experience
+                </button>
+              </div>
+            </div>
+          )}
         </ResponsiveLayout>
       </section>
     </div>

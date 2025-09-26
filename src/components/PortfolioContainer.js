@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import IntroSection from './sections/IntroSection';
-import WorkExperienceSection from './sections/WorkExperienceSection';
-import JobSection from './sections/JobSection';
+import SkillsSection from './sections/SkillsSection';
+import ExperienceSection from './sections/ExperienceSection';
+import ProjectsSection from './sections/ProjectsSection';
+import EducationSection from './sections/EducationSection';
 import ContactSection from './sections/ContactSection';
 import './PortfolioContainer.css';
 
@@ -10,142 +11,241 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
   const containerRef = useRef(null);
   const [currentSection, setCurrentSection] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const lastReportedSectionRef = useRef(-1);
 
-  // Portfolio data - replace with your actual information
-  const portfolioData = {
+  const portfolioData = useMemo(() => ({
     intro: {
-      title: "Welcome to My Journey",
-      subtitle: "Full-Stack Developer & 3D Enthusiast",
-      description: "I'm a passionate developer who loves creating immersive digital experiences. This portfolio takes you through my professional journey, with each section representing a chapter of my career.",
-      image: "/api/placeholder/400/300",
-      cta: "Explore My Story"
+      title: "Liam Degand",
+      subtitle: "Computer Science Student & Full-Stack Developer",
+      description: "Passionate about technology and software development. Currently pursuing a Bachelor of Science in Computer Science at the University of Victoria, with hands-on experience in full-stack development, data analysis, and emerging technologies.",
+      location: "Victoria, BC, Canada",
+      email: "degandliam013@gmail.com",
+      phone: "1 (819) 664-4427",
+      image: "/api/placeholder/400/300"
     },
-    jobs: [
+    skills: {
+      title: "Technical Skills",
+      categories: [
+        {
+          name: "Programming",
+          skills: ["Python", "C", "Java", "Assembly", "Bash", "Git"]
+        },
+        {
+          name: "Data Analysis", 
+          skills: ["MS Excel", "SQL"]
+        },
+        {
+          name: "Web Development",
+          skills: ["HTML", "CSS", "Node.js", "React"]
+        },
+        {
+          name: "Operating Systems",
+          skills: ["Linux", "MS Windows"]
+        },
+        {
+          name: "Software & Tools",
+          skills: ["VS Code", "Microchip Studio", "Apache Airflow", "MongoDB", "AWS", "Azure", "GNU Radio", "STM32 Cube IDE"]
+        }
+      ]
+    },
+    experience: [
       {
         id: 1,
-        company: "Tech Startup Inc.",
-        position: "Senior Full-Stack Developer",
-        duration: "2022 - Present",
-        description: "Led development of scalable web applications using React, Node.js, and cloud technologies. Implemented 3D visualization features that increased user engagement by 40%.",
-        achievements: [
-          "Built responsive web applications serving 100k+ users",
-          "Implemented real-time 3D data visualization",
-          "Led a team of 5 developers",
-          "Reduced application load time by 60%"
+        company: "University of Victoria",
+        position: "Teaching Assistant",
+        duration: "Sept 2025 – Present",
+        location: "Victoria, BC",
+        description: "Assisting Dr. Yan with teaching CSC105 Computers and Information Processing class. Responsible for directing labs twice a week as well as grading and invigilating exams throughout the semester.",
+        details: [
+          "Topics include microcomputers, word processing, spreadsheets, database systems, communication, networks, and Python programming",
+          "Managing lab sessions and student assessments"
         ],
-        technologies: ["React", "Node.js", "Three.js", "AWS", "MongoDB"],
-        image: "/api/placeholder/500/300",
+        technologies: ["Python", "Database Systems", "Computer Fundamentals"],
         globeRotation: { x: 0, y: Math.PI / 4, z: 0 }
       },
       {
         id: 2,
-        company: "Digital Agency Co.",
-        position: "Frontend Developer",
-        duration: "2020 - 2022",
-        description: "Specialized in creating interactive user interfaces and implementing complex animations. Worked on high-profile client projects including e-commerce platforms and corporate websites.",
-        achievements: [
-          "Developed 20+ client websites",
-          "Created custom animation libraries",
-          "Improved site performance by 50%",
-          "Mentored junior developers"
+        company: "National Research Council",
+        position: "Full Stack Developer Co-op (Hybrid)",
+        duration: "May 2025 – Sept 2025",
+        location: "Ottawa, ON",
+        description: "Added new features, debugged and triaged the staff portal. Improved an existing NLP model by applying a multi-task approach using PyTorch and Pandas.",
+        details: [
+          "Developed features using MUI, React, and Node.js for staff portal",
+          "Enhanced middleware functionality with C# connected to SQL database",
+          "Researched and implemented multi-task NLP model improvements",
+          "Tested accuracy using Python libraries PyTorch and Pandas"
         ],
-        technologies: ["Vue.js", "JavaScript", "CSS3", "WebGL", "Figma"],
-        image: "/api/placeholder/500/300",
+        technologies: ["React", "Node.js", "C#", "SQL", "Python", "PyTorch", "Pandas", "MUI"],
         globeRotation: { x: Math.PI / 6, y: Math.PI / 2, z: 0 }
       },
       {
         id: 3,
-        company: "Freelance",
-        position: "Web Developer",
-        duration: "2018 - 2020",
-        description: "Started my journey as a freelance developer, working with small businesses to create their online presence. This period taught me the importance of client communication and project management.",
-        achievements: [
-          "Completed 50+ projects",
-          "Built custom WordPress themes",
-          "Established client relationships",
-          "Learned project management skills"
+        company: "Advanced Symbolics",
+        position: "Support Engineer Intern (Remote)",
+        duration: "May 2023 – Aug 2023",
+        location: "Ottawa, ON",
+        description: "Triaged code failures, searched for root causes, and reported results to team members. Learned Apache Airflow, AWS, and MongoDB to streamline workflow processes.",
+        details: [
+          "Facilitated agile workflow as part of a team of 8",
+          "Created Python scripts to search databases for triaging and bug solving",
+          "Streamlined tasks for smoother workflow processes"
         ],
-        technologies: ["HTML5", "CSS3", "JavaScript", "PHP", "WordPress"],
-        image: "/api/placeholder/500/300",
+        technologies: ["Python", "Apache Airflow", "AWS", "MongoDB"],
         globeRotation: { x: -Math.PI / 4, y: Math.PI, z: 0 }
       }
     ],
+    projects: [
+      {
+        id: 1,
+        title: "MARMOTSAT Communication Protocol",
+        organization: "UVic Satellite Club",
+        duration: "Jan 2025 – Present",
+        description: "Leading a team of 7 to implement a communication protocol designed for satellite launch in collaboration with UVic's Center for Aerospace Research.",
+        details: [
+          "Designed UDP-based communication protocol",
+          "Leading team of 7 students",
+          "Collaborating with University of Victoria's Center for Aerospace Research"
+        ],
+        technologies: ["UDP", "Communication Protocols", "Team Leadership"],
+        globeRotation: { x: 0, y: Math.PI / 3, z: 0 }
+      },
+      {
+        id: 2,
+        title: "AWS DeepRacer AI Optimization",
+        organization: "University of Victoria",
+        duration: "Nov 2024",
+        description: "Worked as part of a team to optimize the reward function on an existing AI racing model, following full software development life cycle.",
+        details: [
+          "Configured team repository and structured workflow through Git issues",
+          "Implemented reward function optimization",
+          "Fixed last-minute bugs and issues"
+        ],
+        technologies: ["AWS", "AI/ML", "Git", "Python"],
+        globeRotation: { x: Math.PI / 8, y: Math.PI / 1.5, z: 0 }
+      }
+    ],
+    education: {
+      title: "Education",
+      degree: "Bachelor of Science – Computer Science",
+      institution: "University of Victoria",
+      duration: "Sep 2022 – Present",
+      location: "Victoria, BC",
+      currentCourses: ["Data Mining", "Database Systems", "Simulations in Operations Research"],
+      description: "Pursuing comprehensive computer science education with focus on practical applications and emerging technologies."
+    },
     contact: {
       title: "Let's Connect",
       subtitle: "Ready to work together?",
       description: "I'm always interested in new opportunities and exciting projects. Whether you have a question about my work or want to discuss a potential collaboration, I'd love to hear from you.",
-      email: "your.email@example.com",
-      linkedin: "linkedin.com/in/yourprofile",
-      github: "github.com/yourusername"
+      email: "degandliam013@gmail.com",
+      phone: "1 (819) 664-4427",
+      location: "Victoria, BC, Canada"
     }
-  };
+  }), []);
 
   // Handle scroll progress and section changes
+  const getSectionData = useCallback((sectionIndex) => {
+    if (sectionIndex === 0) return portfolioData.intro;
+    if (sectionIndex === 1) return portfolioData.skills;
+    if (sectionIndex === 2) return { type: 'experience', data: portfolioData.experience };
+    if (sectionIndex === 3) return { type: 'projects', data: portfolioData.projects };
+    if (sectionIndex === 4) return portfolioData.education;
+    if (sectionIndex === 5) {
+      return {
+        ...portfolioData.contact,
+        type: 'contact-info'
+      };
+    }
+    return portfolioData.intro;
+  }, [portfolioData]);
+
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      
-      console.log('Scroll Debug:', {
-        scrollTop,
-        windowHeight,
-        documentHeight,
-        scrollPercentage: (scrollTop / (documentHeight - windowHeight)) * 100
-      });
-      
-      // Calculate current section based on scroll position
-      const totalSections = portfolioData.jobs.length + 3; // intro + work experience + jobs + contact
-      const sectionHeight = documentHeight / totalSections;
-      const sectionIndex = Math.floor(scrollTop / sectionHeight);
-      const clampedIndex = Math.min(Math.max(sectionIndex, 0), totalSections - 1);
-      
-      // Calculate scroll progress (0 to 1)
-      const progress = (scrollTop % sectionHeight) / sectionHeight;
-      setScrollProgress(progress);
-      
-      if (clampedIndex !== currentSection) {
-        setCurrentSection(clampedIndex);
-        console.log('Section changed to:', clampedIndex);
-        
-        // Only trigger 3D scene animation for work experience section
-        if (onScrollChange) {
-          const sectionData = getSectionData(clampedIndex);
-          onScrollChange({
-            section: clampedIndex,
-            data: sectionData,
-            progress: progress,
-            isWorkExperience: clampedIndex === 1 // Work experience is section 1
-          });
+    if (!containerRef.current) return undefined;
+
+    const updateActiveSection = () => {
+      const sections = Array.from(
+        containerRef.current.querySelectorAll('.portfolio-sections > .section')
+      );
+      if (!sections.length) return;
+
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+
+      const sectionStates = sections
+        .map((ref, index) => {
+          if (!ref) return null;
+          const rect = ref.getBoundingClientRect();
+          const offsetTop = rect.top + scrollY;
+          const height = rect.height || viewportHeight;
+          const centerDistance = Math.abs(rect.top + rect.height / 2 - viewportHeight / 2);
+          return {
+            index,
+            centerDistance,
+            offsetTop,
+            height
+          };
+        })
+        .filter(Boolean)
+        .sort((a, b) => a.centerDistance - b.centerDistance);
+
+      if (!sectionStates.length) return;
+
+      const active = sectionStates[0];
+      const totalSections = Math.max(sections.length, 1);
+
+      const documentHeight = Math.max(document.body.scrollHeight - viewportHeight, 1);
+      setScrollProgress(Math.min(1, Math.max(0, scrollY / documentHeight)));
+
+      setCurrentSection((prev) => {
+        if (prev !== active.index) {
+          return active.index;
         }
+        return prev;
+      });
+
+      if (onScrollChange && lastReportedSectionRef.current !== active.index) {
+        lastReportedSectionRef.current = active.index;
+        const sectionData = getSectionData(active.index);
+        onScrollChange({
+          section: active.index,
+          data: sectionData,
+          progress: 0
+        });
       }
     };
 
-    // Initial call to set up the first section
-    setTimeout(handleScroll, 100);
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-    };
-  }, [currentSection, onScrollChange]);
+    updateActiveSection();
 
-  const getSectionData = (sectionIndex) => {
-    if (sectionIndex === 0) return portfolioData.intro;
-    if (sectionIndex === 1) return { type: 'work-experience' };
-    if (sectionIndex === portfolioData.jobs.length + 2) return portfolioData.contact;
-    return portfolioData.jobs[sectionIndex - 2];
-  };
+    let animationFrame = null;
+    const scheduleUpdate = () => {
+      if (animationFrame !== null) return;
+      animationFrame = window.requestAnimationFrame(() => {
+        animationFrame = null;
+        updateActiveSection();
+      });
+    };
+
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate, { passive: true });
+
+    return () => {
+      if (animationFrame !== null) {
+        window.cancelAnimationFrame(animationFrame);
+      }
+      window.removeEventListener('scroll', scheduleUpdate);
+      window.removeEventListener('resize', scheduleUpdate);
+    };
+  }, [getSectionData, onScrollChange]);
 
   const scrollToSection = (sectionIndex) => {
-    const sectionHeight = window.innerHeight;
-    const scrollPosition = sectionIndex * sectionHeight;
-    window.scrollTo({
-      top: scrollPosition,
-      behavior: 'smooth'
-    });
+    const sections = Array.from(
+      containerRef.current?.querySelectorAll('.portfolio-sections > .section') || []
+    );
+    const targetSection = sections[sectionIndex];
+    if (targetSection) {
+      targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   return (
@@ -161,26 +261,35 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
               className={`nav-item ${currentSection === 0 ? 'active' : ''}`}
               onClick={() => scrollToSection(0)}
             >
-              Intro
+              About
             </button>
             <button 
               className={`nav-item ${currentSection === 1 ? 'active' : ''}`}
               onClick={() => scrollToSection(1)}
             >
-              Work Experience
+              Skills
             </button>
-            {portfolioData.jobs.map((job, index) => (
-              <button 
-                key={job.id}
-                className={`nav-item ${currentSection === index + 2 ? 'active' : ''}`}
-                onClick={() => scrollToSection(index + 2)}
-              >
-                {job.company}
-              </button>
-            ))}
             <button 
-              className={`nav-item ${currentSection === portfolioData.jobs.length + 2 ? 'active' : ''}`}
-              onClick={() => scrollToSection(portfolioData.jobs.length + 2)}
+              className={`nav-item ${currentSection === 2 ? 'active' : ''}`}
+              onClick={() => scrollToSection(2)}
+            >
+              Experience
+            </button>
+            <button 
+              className={`nav-item ${currentSection === 3 ? 'active' : ''}`}
+              onClick={() => scrollToSection(3)}
+            >
+              Projects
+            </button>
+              <button 
+              className={`nav-item ${currentSection === 4 ? 'active' : ''}`}
+              onClick={() => scrollToSection(4)}
+              >
+              Education
+              </button>
+            <button 
+              className={`nav-item ${currentSection === 5 ? 'active' : ''}`}
+              onClick={() => scrollToSection(5)}
             >
               Contact
             </button>
@@ -204,26 +313,34 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
           isActive={currentSection === 0}
         />
         
-        <WorkExperienceSection
+        <SkillsSection
+          data={portfolioData.skills}
           deviceType={deviceType}
           isActive={currentSection === 1}
-          onGlobeScroll={onScrollChange}
         />
         
-        {portfolioData.jobs.map((job, index) => (
-          <JobSection
-            key={job.id}
-            data={job}
-            deviceType={deviceType}
-            isActive={currentSection === index + 2}
-            sectionIndex={index + 3}
-          />
-        ))}
+        <ExperienceSection
+          data={portfolioData.experience}
+          deviceType={deviceType}
+          isActive={currentSection === 2}
+        />
+        
+        <ProjectsSection
+          data={portfolioData.projects}
+          deviceType={deviceType}
+          isActive={currentSection === 3}
+        />
+        
+        <EducationSection
+          data={portfolioData.education}
+          deviceType={deviceType}
+          isActive={currentSection === 4}
+        />
         
         <ContactSection
           data={portfolioData.contact}
           deviceType={deviceType}
-          isActive={currentSection === portfolioData.jobs.length + 2}
+          isActive={currentSection === 5}
         />
       </div>
     </div>

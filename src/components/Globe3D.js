@@ -1,88 +1,198 @@
+/* eslint-disable react/no-unknown-property */
 import React, { useRef, useMemo, useEffect, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { useGLTF } from '@react-three/drei';
+import { useGLTF, MeshTransmissionMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
-const Globe3D = ({ deviceType }) => {
-  const meshRef = useRef();
-  const groupRef = useRef();
-  const [scrollRotation, setScrollRotation] = useState(0);
-  
-  // Load the GLB model - handle both development and production paths
-  const modelPath = process.env.NODE_ENV === 'development' 
-    ? '/Cursor-Hackathon/models/earth_cartoon.glb'
-    : '/models/earth_cartoon.glb';
+const modelPath = process.env.NODE_ENV === 'development'
+  ? '/Cursor-Hackathon/models/earth_cartoon.glb'
+  : '/models/earth_cartoon.glb';
+
+const DetailedGlobe = ({ modelScale, deviceType }) => {
   const { scene } = useGLTF(modelPath);
-  
-  // Clone the scene to avoid modifying the original
+
   const clonedScene = useMemo(() => {
     return scene.clone();
   }, [scene]);
 
+  return (
+    <>
+      <primitive
+        // eslint-disable-next-line react/no-unknown-property
+        object={clonedScene}
+        // eslint-disable-next-line react/no-unknown-property
+        scale={modelScale}
+        // eslint-disable-next-line react/no-unknown-property
+        position={[0, 0, 0]}
+      />
+      <mesh scale={modelScale * 1.08}>
+        {/* eslint-disable-next-line react/no-unknown-property */}
+        <sphereGeometry args={[1, 32, 32]} />
+        <MeshTransmissionMaterial
+          thickness={0.18}
+          transmission={0.92}
+          anisotropy={0.18}
+          chromaticAberration={0.04}
+          roughness={0.12}
+          clearcoat={0.9}
+          clearcoatRoughness={0.12}
+          backside
+        />
+      </mesh>
+      {deviceType === 'desktop' && (
+        <mesh scale={modelScale * 1.02}>
+          {/* eslint-disable-next-line react/no-unknown-property */}
+          <sphereGeometry args={[1, 32, 32]} />
+          <meshBasicMaterial
+            color="#add8e6"
+            transparent
+            opacity={0.05}
+            side={THREE.BackSide}
+          />
+        </mesh>
+      )}
+    </>
+  );
+};
+
+const Globe3D = ({ deviceType, activeChapter, info }) => {
+  const meshRef = useRef();
+  const groupRef = useRef();
+  const [targetRotation, setTargetRotation] = useState(new THREE.Euler(0, 0, 0));
+  const currentRotationRef = useRef(new THREE.Euler(0, 0, 0));
+  
   // Scale the model based on device type for performance optimization
   const modelScale = useMemo(() => {
-    return deviceType === 'mobile' ? 0.8 : deviceType === 'tablet' ? 0.9 : 1.0;
+    return deviceType === 'mobile' ? 0.65 : deviceType === 'tablet' ? 0.85 : 1.0;
   }, [deviceType]);
 
-  // Scroll-to-rotate behavior (horizontal around Y axis)
   useEffect(() => {
-    const handleWheel = (event) => {
-      const rotationSpeed = 0.003;
-      setScrollRotation((prev) => {
-        const next = prev + event.deltaY * rotationSpeed;
-        // Clamp to avoid runaway spins (± 4 full rotations)
-        const max = Math.PI * 4;
-        return Math.max(-max, Math.min(max, next));
-      });
-    };
-    window.addEventListener('wheel', handleWheel, { passive: true });
-    return () => window.removeEventListener('wheel', handleWheel);
-  }, []);
+    if (!info || !info.data) return;
 
-  // Apply scroll-based rotation each frame
-  useFrame(() => {
-    if (groupRef.current) {
-      groupRef.current.rotation.x = scrollRotation;
+    if (info.data.globeRotation) {
+      const { x = 0, y = 0, z = 0 } = info.data.globeRotation;
+      setTargetRotation(new THREE.Euler(x, y, z));
+    } else {
+      const fallbackRotation = new THREE.Euler(
+        0.1 * (info.section || 0),
+        Math.PI / 8 * (info.section || 0),
+        0
+      );
+      setTargetRotation(fallbackRotation);
     }
+  }, [info]);
+
+  // Scroll-to-rotate behavior replaced with section-based easing
+  useEffect(() => {
+    if (!info || !info.data) return;
+
+    const progress = info.progress ?? 0;
+    const baseRotation = info.data.globeRotation || {
+      x: 0.1 * (activeChapter || 0),
+      y: Math.PI / 6 * (activeChapter || 0),
+      z: 0
+    };
+
+    const computedRotation = new THREE.Euler(
+      baseRotation.x + progress * 0.2,
+      baseRotation.y + progress * 0.5,
+      baseRotation.z + progress * 0.1
+    );
+
+    setTargetRotation(computedRotation);
+  }, [info, activeChapter]);
+
+  useFrame((_, delta) => {
+    if (!groupRef.current) return;
+
+    const currentRotation = currentRotationRef.current;
+
+    currentRotation.x = THREE.MathUtils.damp(
+      currentRotation.x,
+      targetRotation.x,
+      6,
+      delta
+    );
+    currentRotation.y = THREE.MathUtils.damp(
+      currentRotation.y,
+      targetRotation.y,
+      6,
+      delta
+    );
+    currentRotation.z = THREE.MathUtils.damp(
+      currentRotation.z,
+      targetRotation.z,
+      6,
+      delta
+    );
+
+    groupRef.current.rotation.x = currentRotation.x;
+    groupRef.current.rotation.y = currentRotation.y;
+    groupRef.current.rotation.z = currentRotation.z;
   });
+
+  if (deviceType === 'mobile') {
+    return (
+      <group ref={groupRef}>
+        <mesh scale={modelScale * 0.95}>
+          {/* eslint-disable-next-line react/no-unknown-property */}
+          <icosahedronGeometry args={[1, 2]} />
+          <meshStandardMaterial
+            color="#4da1ff"
+            metalness={0.25}
+            roughness={0.4}
+          />
+        </mesh>
+        <mesh scale={modelScale * 1.1}>
+          {/* eslint-disable-next-line react/no-unknown-property */}
+          <icosahedronGeometry args={[1, 3]} />
+          <meshBasicMaterial
+            color="#87ceeb"
+            transparent
+            opacity={0.1}
+            side={THREE.BackSide}
+          />
+        </mesh>
+      </group>
+    );
+  }
 
   return (
     <group ref={groupRef}>
-      {/* Main Earth GLB Model */}
-      <primitive
-        ref={meshRef}
-        object={clonedScene} // eslint-disable-line react/no-unknown-property
-        scale={modelScale}
-        position={[0, 0, 0]} // eslint-disable-line react/no-unknown-property
-      />
-      
-      {/* Atmospheric glow effect */}
-      <mesh>
-        {/* eslint-disable-next-line react/no-unknown-property */}
-        <sphereGeometry args={[1.1 * modelScale, 32, 32]} />
-        <meshBasicMaterial
-          color="#87ceeb"
-          transparent={true} // eslint-disable-line react/no-unknown-property
-          opacity={0.1}
-          side={THREE.BackSide} // eslint-disable-line react/no-unknown-property
-        />
-      </mesh>
-      
-      {/* Additional atmospheric layers for desktop */}
-      {deviceType === 'desktop' && (
-        <mesh>
-          {/* eslint-disable-next-line react/no-unknown-property */}
-          <sphereGeometry args={[1.05 * modelScale, 32, 32]} />
-          <meshBasicMaterial
-            color="#add8e6"
-            transparent={true} // eslint-disable-line react/no-unknown-property
-            opacity={0.05}
-            side={THREE.BackSide} // eslint-disable-line react/no-unknown-property
-          />
-        </mesh>
+      {deviceType === 'mobile' ? (
+        <>
+          <mesh scale={modelScale}>
+            {/* eslint-disable-next-line react/no-unknown-property */}
+            <icosahedronGeometry args={[1, 2]} />
+            <meshStandardMaterial
+              color="#4da1ff"
+              metalness={0.2}
+              roughness={0.45}
+              emissive="#0b1d3b"
+              emissiveIntensity={0.4}
+            />
+          </mesh>
+          <mesh scale={modelScale * 1.1}>
+            {/* eslint-disable-next-line react/no-unknown-property */}
+            <icosahedronGeometry args={[1, 3]} />
+            <meshBasicMaterial
+              color="#87ceeb"
+              transparent
+              opacity={0.12}
+              side={THREE.BackSide}
+            />
+          </mesh>
+        </>
+      ) : (
+        <DetailedGlobe modelScale={modelScale} deviceType={deviceType} />
       )}
     </group>
   );
 };
 
+if (typeof window !== 'undefined') {
+  useGLTF.preload(modelPath);
+}
+
 export default Globe3D;
+/* eslint-enable react/no-unknown-property */

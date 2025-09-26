@@ -10,6 +10,7 @@
   position: relative;
   width: 100%;
   box-sizing: border-box;
+  transition: none;
 }
 
 .section-content {
@@ -125,181 +126,7 @@
   margin-top: 2rem;
 }
 
-.intro-additional {
-  margin-top: 3rem;
-  text-align: center;
-}
-
-.intro-additional h3 {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #ffffff;
-  margin: 0 0 2rem 0;
-  background: linear-gradient(45deg, #87ceeb, #add8e6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.additional-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.additional-item {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 2rem;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-.additional-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-}
-
-.additional-item h4 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #87ceeb;
-  margin: 0 0 1rem 0;
-}
-
-.additional-item p {
-  font-size: 1rem;
-  color: #ffffff;
-  opacity: 0.8;
-  margin: 0;
-  line-height: 1.6;
-}
-
-.intro-stats {
-  margin-top: 4rem;
-  text-align: center;
-}
-
-.intro-stats h3 {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #ffffff;
-  margin: 0 0 2rem 0;
-  background: linear-gradient(45deg, #87ceeb, #add8e6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.stat-item {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 2rem;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-.stat-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateY(-5px);
-}
-
-.stat-number {
-  font-size: 3rem;
-  font-weight: 700;
-  color: #87ceeb;
-  margin: 0 0 0.5rem 0;
-  background: linear-gradient(45deg, #87ceeb, #add8e6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.stat-label {
-  font-size: 1rem;
-  color: #ffffff;
-  opacity: 0.8;
-  font-weight: 500;
-}
-
-.intro-process {
-  margin-top: 4rem;
-  text-align: center;
-}
-
-.intro-process h3 {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #ffffff;
-  margin: 0 0 2rem 0;
-  background: linear-gradient(45deg, #87ceeb, #add8e6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.process-steps {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.process-step {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 2rem;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-}
-
-.process-step:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateY(-5px);
-}
-
-.step-number {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: linear-gradient(45deg, #87ceeb, #add8e6);
-  color: #0c0c0c;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 1.2rem;
-  flex-shrink: 0;
-}
-
-.step-content h4 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #87ceeb;
-  margin: 0 0 0.5rem 0;
-}
-
-.step-content p {
-  font-size: 1rem;
-  color: #ffffff;
-  opacity: 0.8;
-  margin: 0;
-  line-height: 1.6;
-}
+/* Removed additional intro sections for lighter layout */
 
 .cta-button {
   background: linear-gradient(45deg, #87ceeb, #add8e6);
@@ -790,6 +617,7 @@
   bottom: 0;
   width: 2px;
   background: linear-gradient(to bottom, #87ceeb, transparent);
+  opacity: 0.6;
 }
 
 .timeline-item {
@@ -1035,17 +863,17 @@
 }
 
 .contact-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: start;
-  min-height: 70vh;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .contact-methods {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 2rem;
+  width: 100%;
+  max-width: 720px;
 }
 
 .contact-card {

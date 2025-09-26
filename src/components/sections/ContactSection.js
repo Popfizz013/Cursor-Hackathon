@@ -1,75 +1,25 @@
-import React, { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import React, { forwardRef } from 'react';
 import './SectionStyles.css';
 
-const ContactSection = ({ data, deviceType, isActive }) => {
-  const sectionRef = useRef(null);
-
-  useEffect(() => {
-    if (isActive && sectionRef.current) {
-      sectionRef.current.classList.add('visible');
-    }
-  }, [isActive]);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.5, ease: "easeOut" }
-    }
-  };
-
+const ContactSection = forwardRef(({ data, deviceType, isActive }, ref) => {
   return (
-    <motion.section
-      ref={sectionRef}
+    <section
+      ref={ref}
       className={`contact-section section ${isActive ? 'active' : ''}`}
-      variants={containerVariants}
-      initial="hidden"
-      animate={isActive ? "visible" : "hidden"}
+      data-section-index={5}
+      style={{ opacity: isActive ? 1 : 0.95 }}
     >
       <div className="section-content">
-        {/* Section header */}
-        <motion.div 
-          className="section-header"
-          variants={itemVariants}
-        >
+        <div className="section-header">
           <h2 className="section-title">{data.title}</h2>
           <h3 className="section-subtitle">{data.subtitle}</h3>
           <p className="section-description">{data.description}</p>
-        </motion.div>
+        </div>
 
         <div className="contact-grid">
-          {/* Contact methods */}
-          <motion.div 
-            className="contact-methods"
-            variants={itemVariants}
-          >
-            <motion.div 
+          <div className="contact-methods">
+            <div 
               className="contact-card"
-              variants={cardVariants}
-              whileHover={{ scale: 1.05, y: -5 }}
-              whileTap={{ scale: 0.95 }}
             >
               <div className="contact-icon email-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -82,13 +32,10 @@ const ContactSection = ({ data, deviceType, isActive }) => {
               <a href={`mailto:${data.email}`} className="contact-link">
                 Send Message
               </a>
-            </motion.div>
+            </div>
 
-            <motion.div 
+            <div 
               className="contact-card"
-              variants={cardVariants}
-              whileHover={{ scale: 1.05, y: -5 }}
-              whileTap={{ scale: 0.95 }}
             >
               <div className="contact-icon linkedin-icon">
                 <svg viewBox="0 0 24 24" fill="currentColor">
@@ -100,132 +47,35 @@ const ContactSection = ({ data, deviceType, isActive }) => {
               <a href={`https://${data.linkedin}`} target="_blank" rel="noopener noreferrer" className="contact-link">
                 Connect
               </a>
-            </motion.div>
+            </div>
 
-            <motion.div 
+            <div 
               className="contact-card"
-              variants={cardVariants}
-              whileHover={{ scale: 1.05, y: -5 }}
-              whileTap={{ scale: 0.95 }}
             >
-              <div className="contact-icon github-icon">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              <div className="contact-icon phone-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                 </svg>
               </div>
-              <h4>GitHub</h4>
-              <p>Code Repository</p>
-              <a href={`https://${data.github}`} target="_blank" rel="noopener noreferrer" className="contact-link">
-                View Profile
+              <h4>Phone</h4>
+              <p>{data.phone}</p>
+              <a href={`tel:${data.phone}`} className="contact-link">
+                Call Now
               </a>
-            </motion.div>
-          </motion.div>
-
-          {/* Contact form */}
-          <motion.div 
-            className="contact-form-container"
-            variants={itemVariants}
-          >
-            <motion.form 
-              className="contact-form"
-              variants={cardVariants}
-            >
-              <h4>Send a Message</h4>
-              
-              <div className="form-group">
-                <label htmlFor="name">Name</label>
-                <input 
-                  type="text" 
-                  id="name" 
-                  name="name" 
-                  placeholder="Your name"
-                  required
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input 
-                  type="email" 
-                  id="email" 
-                  name="email" 
-                  placeholder="your.email@example.com"
-                  required
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="subject">Subject</label>
-                <input 
-                  type="text" 
-                  id="subject" 
-                  name="subject" 
-                  placeholder="What's this about?"
-                  required
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="message">Message</label>
-                <textarea 
-                  id="message" 
-                  name="message" 
-                  rows="5"
-                  placeholder="Tell me about your project or idea..."
-                  required
-                ></textarea>
-              </div>
-              
-              <motion.button 
-                type="submit" 
-                className="submit-button"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Send Message
-                <span className="button-arrow">→</span>
-              </motion.button>
-            </motion.form>
-          </motion.div>
-        </div>
-
-        {/* Additional Lorem ipsum content */}
-        <motion.div 
-          className="contact-lorem-content"
-          variants={itemVariants}
-        >
-          <h3>Lorem Ipsum Dolor Sit Amet</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-          
-          <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-          
-          <div className="lorem-contact-features">
-            <div className="lorem-contact-feature">
-              <h4>Consectetur Adipiscing</h4>
-              <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
-            </div>
-            <div className="lorem-contact-feature">
-              <h4>Sed Do Eiusmod</h4>
-              <p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur.</p>
-            </div>
-            <div className="lorem-contact-feature">
-              <h4>Tempor Incididunt</h4>
-              <p>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi.</p>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Footer */}
-        <motion.div 
-          className="contact-footer"
-          variants={itemVariants}
-        >
-          <p>&copy; 2024 Your Name. All rights reserved.</p>
+        <div className="contact-footer">
+          <p>&copy; 2024 Liam Degand. All rights reserved.</p>
           <p>Built with React, Three.js, and lots of ☕</p>
-        </motion.div>
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
-};
+});
+
+ContactSection.displayName = 'ContactSection';
 
 export default ContactSection;
