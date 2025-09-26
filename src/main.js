@@ -30,7 +30,7 @@ let cameraList = [];
 
 let camera;
 let globeModel = null; // Reference to the loaded globe model
-let scrollRotation = 0; // Track scroll-based rotation
+let scrollRotation = 0; // Track scroll-based rotation (disabled)
 
 // Add lighting to the scene so we can see the model
 const ambientLight = new THREE.AmbientLight(0x404040, 0.6); // soft white light
@@ -97,8 +97,7 @@ function retrieveListOfCameras(scene){
     camera.lookAt(center);
   }
 
-  // Add scroll event listener for globe rotation
-  setupScrollRotation();
+  // Scroll-based rotation disabled; allow default zoom/scroll behavior
 
   // Start the animation loop after the model and cameras are loaded
   animate();
@@ -112,22 +111,7 @@ function updateCameraAspect(camera) {
   camera.updateProjectionMatrix();
 }
 
-// Setup scroll event listener for globe rotation
-function setupScrollRotation() {
-  window.addEventListener('wheel', (event) => {
-    // Prevent default scrolling behavior
-    event.preventDefault();
-    
-    // Calculate rotation based on scroll direction and amount
-    const rotationSpeed = 0.01;
-    scrollRotation += event.deltaY * rotationSpeed;
-    
-    // Limit rotation to prevent excessive spinning
-    scrollRotation = Math.max(-Math.PI * 4, Math.min(Math.PI * 4, scrollRotation));
-    
-    console.log('Scroll rotation:', scrollRotation);
-  }, { passive: false });
-}
+// Scroll rotation removed
 
 //A method to be run each time a frame is generated
 function animate() {
