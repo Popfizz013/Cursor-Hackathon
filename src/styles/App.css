@@ -19,8 +19,26 @@
 @media (max-width: 767px) {
   .app {
     /* Mobile-specific optimizations */
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: none;
+    /* Note: -webkit-overflow-scrolling is deprecated and not widely supported */
+    /* Using standard overflow behavior instead */
+    overflow: auto;
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+  
+  /* Only apply overscroll-behavior for browsers that support it */
+  @supports (overscroll-behavior: none) {
+    .app {
+      overscroll-behavior: none;
+    }
+  }
+  
+  /* Fallback for browsers that don't support overscroll-behavior */
+  @supports not (overscroll-behavior: none) {
+    .app {
+      /* Alternative approach for older browsers - using only well-supported properties */
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
   }
 }
 

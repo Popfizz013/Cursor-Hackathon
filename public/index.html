@@ -4,7 +4,19 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <!-- Theme color with feature detection -->
+    <script>
+      // Only add theme-color meta tag for browsers that support it
+      if (window.CSS && CSS.supports && CSS.supports('color', '#000000')) {
+        const themeColorMeta = document.createElement('meta');
+        themeColorMeta.name = 'theme-color';
+        themeColorMeta.content = '#000000';
+        document.head.appendChild(themeColorMeta);
+      }
+    </script>
+    <!-- Fallback for older browsers -->
+    <meta name="msapplication-navbutton-color" content="#000000" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta
       name="description"
       content="Interactive 3D Globe - Built for Victoria's first Cursor Hackathon"
@@ -19,59 +31,24 @@
     <!-- Responsive meta tags -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     <!-- Performance hints -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    
+    <!-- Loading styles -->
+    <link rel="stylesheet" href="%PUBLIC_URL%/loading.css">
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     
     <!-- Loading indicator -->
-    <div id="loading" style="
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      color: white;
-      font-family: Arial, sans-serif;
-    ">
-      <div style="text-align: center;">
-        <div style="
-          width: 50px;
-          height: 50px;
-          border: 3px solid #333;
-          border-top: 3px solid #fff;
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-          margin: 0 auto 20px;
-        "></div>
+    <div id="loading">
+      <div class="loading-content">
+        <div class="spinner"></div>
         <p>Loading 3D Globe...</p>
       </div>
     </div>
-    
-    <style>
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-      
-      #loading {
-        transition: opacity 0.5s ease-out;
-      }
-      
-      #loading.hidden {
-        opacity: 0;
-        pointer-events: none;
-      }
-    </style>
   </body>
 </html>
