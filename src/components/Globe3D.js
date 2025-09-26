@@ -1,10 +1,12 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useEffect, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 
 const Globe3D = ({ deviceType }) => {
   const meshRef = useRef();
+  const groupRef = useRef();
+  const [scrollRotation, setScrollRotation] = useState(0);
   
   // Load the GLB model - handle both development and production paths
   const modelPath = process.env.NODE_ENV === 'development' 
@@ -22,15 +24,30 @@ const Globe3D = ({ deviceType }) => {
     return deviceType === 'mobile' ? 0.8 : deviceType === 'tablet' ? 0.9 : 1.0;
   }, [deviceType]);
 
-  // Smooth rotation animation
+  // Scroll-to-rotate behavior (horizontal around Y axis)
+  useEffect(() => {
+    const handleWheel = (event) => {
+      const rotationSpeed = 0.003;
+      setScrollRotation((prev) => {
+        const next = prev + event.deltaY * rotationSpeed;
+        // Clamp to avoid runaway spins (± 4 full rotations)
+        const max = Math.PI * 4;
+        return Math.max(-max, Math.min(max, next));
+      });
+    };
+    window.addEventListener('wheel', handleWheel, { passive: true });
+    return () => window.removeEventListener('wheel', handleWheel);
+  }, []);
+
+  // Apply scroll-based rotation each frame
   useFrame(() => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += deviceType === 'mobile' ? 0.002 : 0.005;
+    if (groupRef.current) {
+      groupRef.current.rotation.x = scrollRotation;
     }
   });
 
   return (
-    <group>
+    <group ref={groupRef}>
       {/* Main Earth GLB Model */}
       <primitive
         ref={meshRef}
