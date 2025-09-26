@@ -105,7 +105,7 @@ const UI = ({ deviceType }) => {
             }
           </InfoText>
           <InfoText deviceType={deviceType}>
-            Built for Victoria's first Cursor Hackathon with responsive design for all devices.
+            Built for Victoria&apos;s first Cursor Hackathon with responsive design for all devices.
           </InfoText>
           <InfoText deviceType={deviceType}>
             <strong>Device:</strong> {deviceType.charAt(0).toUpperCase() + deviceType.slice(1)}
