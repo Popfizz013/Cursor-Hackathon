@@ -2,8 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 const LayoutContainer = styled.div`
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
+  min-height: ${props => props.$minHeight || '100vh'};
   overflow: hidden;
   position: relative;
   
@@ -39,9 +40,9 @@ const CanvasContainer = styled.div`
   }
 `;
 
-const ResponsiveLayout = ({ children, deviceType }) => {
+const ResponsiveLayout = ({ children, deviceType, minHeight, ...rest }) => {
   return (
-    <LayoutContainer deviceType={deviceType}>
+    <LayoutContainer deviceType={deviceType} $minHeight={minHeight} {...rest}>
       <CanvasContainer>
         {children}
       </CanvasContainer>

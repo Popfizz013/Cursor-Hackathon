@@ -1,8 +1,8 @@
 /* App-specific styles */
 .app {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
   position: relative;
   background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
 }
@@ -13,6 +13,18 @@
   height: 100% !important;
   display: block;
   outline: none;
+}
+
+.globe-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 15% 20%, rgba(39, 83, 145, 0.25), transparent 55%),
+              radial-gradient(circle at 85% 30%, rgba(23, 32, 62, 0.3), transparent 60%),
+              linear-gradient(135deg, #04070f 0%, #080f24 50%, #00030a 100%);
+  padding: clamp(2rem, 5vw, 4rem) 0;
 }
 
 /* Responsive adjustments */
