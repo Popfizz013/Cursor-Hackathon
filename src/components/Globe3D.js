@@ -12,43 +12,77 @@ const DetailedGlobe = ({ modelScale, deviceType }) => {
   const { scene } = useGLTF(modelPath);
 
   const clonedScene = useMemo(() => {
-    return scene.clone();
+    if (!scene) return null;
+
+    const clone = scene.clone(true);
+    clone.traverse((child) => {
+      if (child.isMesh) {
+        child.renderOrder = 1;
+        if (child.material) {
+          const material = child.material.clone ? child.material.clone() : child.material;
+          material.depthWrite = true;
+          material.depthTest = true;
+          material.transparent = false;
+          material.side = THREE.FrontSide;
+          child.material = material;
+        }
+        if (child.geometry) {
+          child.geometry.computeVertexNormals();
+        }
+      }
+    });
+
+    return clone;
   }, [scene]);
+
+  const outlineMaterial = useMemo(() => {
+    const material = new THREE.MeshBasicMaterial({
+      color: '#0b1d3b',
+      side: THREE.BackSide,
+      transparent: true,
+      opacity: 0.1,
+      depthWrite: false
+    });
+    material.renderOrder = 0;
+    return material;
+  }, []);
+
+  const glassMaterial = useMemo(() => (
+    <MeshTransmissionMaterial
+      thickness={0.18}
+      transmission={0.92}
+      anisotropy={0.18}
+      chromaticAberration={0.04}
+      roughness={0.12}
+      clearcoat={0.9}
+      clearcoatRoughness={0.12}
+      backside={false}
+    />
+  ), []);
 
   return (
     <>
-      <primitive
-        // eslint-disable-next-line react/no-unknown-property
-        object={clonedScene}
-        // eslint-disable-next-line react/no-unknown-property
-        scale={modelScale}
-        // eslint-disable-next-line react/no-unknown-property
-        position={[0, 0, 0]}
-      />
-      <mesh scale={modelScale * 1.08}>
+      {clonedScene && (
+        <primitive
+          // eslint-disable-next-line react/no-unknown-property
+          object={clonedScene}
+          // eslint-disable-next-line react/no-unknown-property
+          scale={modelScale}
+          // eslint-disable-next-line react/no-unknown-property
+          position={[0, 0, 0]}
+        />
+      )}
+      <mesh scale={modelScale * 1.08} renderOrder={2}>
         {/* eslint-disable-next-line react/no-unknown-property */}
         <sphereGeometry args={[1, 32, 32]} />
-        <MeshTransmissionMaterial
-          thickness={0.18}
-          transmission={0.92}
-          anisotropy={0.18}
-          chromaticAberration={0.04}
-          roughness={0.12}
-          clearcoat={0.9}
-          clearcoatRoughness={0.12}
-          backside
-        />
+        {glassMaterial}
       </mesh>
       {deviceType === 'desktop' && (
-        <mesh scale={modelScale * 1.02}>
+        <mesh scale={modelScale * 1.02} renderOrder={0}>
           {/* eslint-disable-next-line react/no-unknown-property */}
           <sphereGeometry args={[1, 32, 32]} />
-          <meshBasicMaterial
-            color="#add8e6"
-            transparent
-            opacity={0.05}
-            side={THREE.BackSide}
-          />
+          {/* eslint-disable-next-line react/no-unknown-property */}
+          <primitive object={outlineMaterial} attach="material" />
         </mesh>
       )}
     </>

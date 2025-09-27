@@ -26,21 +26,32 @@ const ExperienceSection = forwardRef(({ data, deviceType, isActive }, ref) => {
     return null;
   }
 
+  const sectionClassNames = [
+    'experience-section',
+    'section',
+    isActive ? 'active' : '',
+    showGlobe ? 'globe-active' : ''
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
-    <section 
+    <section
       ref={ref}
-      className={`experience-section section ${isActive ? 'active' : ''}`}
+      className={sectionClassNames}
       data-section-index={2}
       style={{ opacity: isActive ? 1 : 0.95 }}
     >
       <div className="section-content">
-        <div className="section-header">
-          <div className="section-number">03</div>
-          <h2 className="section-title">Professional Experience</h2>
-          <p className="section-description">
-            My journey in software development and technology
-          </p>
-        </div>
+        {!showGlobe && (
+          <div className="section-header">
+            <div className="section-number">03</div>
+            <h2 className="section-title">Professional Experience</h2>
+            <p className="section-description">
+              My journey in software development and technology
+            </p>
+          </div>
+        )}
 
         <div className="globe-toggle-row">
           <span className="globe-toggle-label">Interactive 3D Globe</span>
@@ -53,8 +64,8 @@ const ExperienceSection = forwardRef(({ data, deviceType, isActive }, ref) => {
           </button>
         </div>
 
-        {showGlobe && (
-          <div className="experience-globe">
+        {showGlobe ? (
+          <div className="experience-globe experience-globe--expanded">
             <Suspense fallback={<div className="globe-loading">Loading globe…</div>}>
               {/* eslint-disable react/no-unknown-property */}
               <Canvas
@@ -89,80 +100,82 @@ const ExperienceSection = forwardRef(({ data, deviceType, isActive }, ref) => {
               {/* eslint-enable react/no-unknown-property */}
             </Suspense>
           </div>
-        )}
-
-        <div className="experience-timeline">
-          {experiences.map((job) => (
-            <div
-              key={job.id}
-              className="timeline-item"
-            >
-              <div className="timeline-marker">
-                <div className="marker-dot"></div>
-                <div className="marker-line"></div>
-              </div>
-              
-              <div className="timeline-content">
-                <div className="job-header">
-                  <h3 className="job-position">{job.position}</h3>
-                  <h4 className="job-company">{job.company}</h4>
-                  <div className="job-meta">
-                    <span className="job-duration">{job.duration}</span>
-                    <span className="job-location">{job.location}</span>
+        ) : (
+          <>
+            <div className="experience-timeline" aria-hidden={showGlobe}>
+              {experiences.map((job) => (
+                <div
+                  key={job.id}
+                  className="timeline-item"
+                >
+                  <div className="timeline-marker">
+                    <div className="marker-dot"></div>
+                    <div className="marker-line"></div>
+                  </div>
+                  
+                  <div className="timeline-content">
+                    <div className="job-header">
+                      <h3 className="job-position">{job.position}</h3>
+                      <h4 className="job-company">{job.company}</h4>
+                      <div className="job-meta">
+                        <span className="job-duration">{job.duration}</span>
+                        <span className="job-location">{job.location}</span>
+                      </div>
+                    </div>
+                    
+                    <p className="job-description">{job.description}</p>
+                    
+                    {job.details && job.details.length > 0 && (
+                      <div className="job-details">
+                        <h5>Key Responsibilities:</h5>
+                        <ul>
+                          {job.details.map((detail, detailIndex) => (
+                            <li key={detailIndex}>{detail}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    
+                    {job.technologies && job.technologies.length > 0 && (
+                      <div className="job-technologies">
+                        <h5>Technologies Used:</h5>
+                        <div className="tech-tags">
+                          {job.technologies.map((tech, techIndex) => (
+                            <span key={techIndex} className="tech-tag">
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
-                
-                <p className="job-description">{job.description}</p>
-                
-                {job.details && job.details.length > 0 && (
-                  <div className="job-details">
-                    <h5>Key Responsibilities:</h5>
-                    <ul>
-                      {job.details.map((detail, detailIndex) => (
-                        <li key={detailIndex}>{detail}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                
-                {job.technologies && job.technologies.length > 0 && (
-                  <div className="job-technologies">
-                    <h5>Technologies Used:</h5>
-                    <div className="tech-tags">
-                      {job.technologies.map((tech, techIndex) => (
-                        <span key={techIndex} className="tech-tag">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
+              ))}
+            </div>
+
+            <div className="experience-summary" aria-hidden={showGlobe}>
+              <h3>Career Highlights</h3>
+              <div className="highlights-grid">
+                <div className="highlight-item">
+                  <div className="highlight-number">3+</div>
+                  <div className="highlight-label">Years Experience</div>
+                </div>
+                <div className="highlight-item">
+                  <div className="highlight-number">2</div>
+                  <div className="highlight-label">Co-op Positions</div>
+                </div>
+                <div className="highlight-item">
+                  <div className="highlight-number">8+</div>
+                  <div className="highlight-label">Technologies Mastered</div>
+                </div>
+                <div className="highlight-item">
+                  <div className="highlight-number">1</div>
+                  <div className="highlight-label">Teaching Role</div>
+                </div>
               </div>
             </div>
-          ))}
-        </div>
-
-        <div className="experience-summary">
-          <h3>Career Highlights</h3>
-          <div className="highlights-grid">
-            <div className="highlight-item">
-              <div className="highlight-number">3+</div>
-              <div className="highlight-label">Years Experience</div>
-            </div>
-            <div className="highlight-item">
-              <div className="highlight-number">2</div>
-              <div className="highlight-label">Co-op Positions</div>
-            </div>
-            <div className="highlight-item">
-              <div className="highlight-number">8+</div>
-              <div className="highlight-label">Technologies Mastered</div>
-            </div>
-            <div className="highlight-item">
-              <div className="highlight-number">1</div>
-              <div className="highlight-label">Teaching Role</div>
-            </div>
-          </div>
-        </div>
+          </>
+        )}
       </div>
     </section>
   );
