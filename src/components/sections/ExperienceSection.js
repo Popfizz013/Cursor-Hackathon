@@ -1,8 +1,30 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useMemo, useState, Suspense } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Stars } from '@react-three/drei';
+import Globe3D from '../Globe3D';
 import './SectionStyles.css';
 
 const ExperienceSection = forwardRef(({ data, deviceType, isActive }, ref) => {
-  if (!data || !Array.isArray(data)) return null;
+  const experiences = useMemo(() => (Array.isArray(data) ? data : []), [data]);
+  const hasExperiences = experiences.length > 0;
+
+  const [showGlobe, setShowGlobe] = useState(false);
+
+  const globeInfo = useMemo(() => {
+    if (!hasExperiences) {
+      return { data: {}, progress: 0 };
+    }
+
+    const fallbackRotation = experiences[0]?.globeRotation || { x: 0, y: 0, z: 0 };
+    return {
+      data: { globeRotation: fallbackRotation },
+      progress: 0
+    };
+  }, [experiences, hasExperiences]);
+
+  if (!hasExperiences) {
+    return null;
+  }
 
   return (
     <section 
@@ -20,8 +42,57 @@ const ExperienceSection = forwardRef(({ data, deviceType, isActive }, ref) => {
           </p>
         </div>
 
+        <div className="globe-toggle-row">
+          <span className="globe-toggle-label">Interactive 3D Globe</span>
+          <button
+            type="button"
+            className={`globe-toggle-button ${showGlobe ? 'active' : ''}`}
+            onClick={() => setShowGlobe((prev) => !prev)}
+          >
+            {showGlobe ? 'Disable' : 'Enable'}
+          </button>
+        </div>
+
+        {showGlobe && (
+          <div className="experience-globe">
+            <Suspense fallback={<div className="globe-loading">Loading globe…</div>}>
+              {/* eslint-disable react/no-unknown-property */}
+              <Canvas
+                camera={{
+                  position: [0, 0, 3],
+                  fov: deviceType === 'mobile' ? 70 : 55
+                }}
+                dpr={[1, deviceType === 'desktop' ? 1.5 : 1.1]}
+              >
+                <ambientLight intensity={0.5} />
+                <directionalLight position={[4, 5, 3]} intensity={1} color="#9ecfff" />
+                <pointLight position={[-4, 3, 5]} intensity={0.6} color="#6aa7ff" />
+                <Stars
+                  radius={70}
+                  depth={35}
+                  count={deviceType === 'desktop' ? 1200 : 400}
+                  factor={2.5}
+                  saturation={0}
+                  fade
+                />
+                <Globe3D deviceType={deviceType} activeChapter={0} info={globeInfo} />
+                <OrbitControls
+                  enablePan={false}
+                  enableZoom={false}
+                  enableRotate
+                  enableDamping
+                  dampingFactor={0.08}
+                  autoRotate={deviceType === 'mobile'}
+                  autoRotateSpeed={0.4}
+                />
+              </Canvas>
+              {/* eslint-enable react/no-unknown-property */}
+            </Suspense>
+          </div>
+        )}
+
         <div className="experience-timeline">
-          {data.map((job, index) => (
+          {experiences.map((job) => (
             <div
               key={job.id}
               className="timeline-item"

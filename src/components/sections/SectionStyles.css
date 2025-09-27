@@ -609,6 +609,72 @@
   margin-right: auto;
 }
 
+.globe-toggle-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.globe-toggle-label {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.globe-toggle-button {
+  background: rgba(135, 206, 235, 0.15);
+  border: 1px solid rgba(135, 206, 235, 0.35);
+  color: #e9f4ff;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.globe-toggle-button:hover {
+  background: rgba(135, 206, 235, 0.25);
+  transform: translateY(-1px);
+}
+
+.globe-toggle-button.active {
+  background: linear-gradient(90deg, rgba(135, 206, 235, 0.95), rgba(173, 216, 230, 0.95));
+  color: #08152c;
+  border-color: transparent;
+  box-shadow: 0 10px 25px rgba(135, 206, 235, 0.35);
+}
+
+.experience-globe {
+  margin: 2.5rem auto 0;
+  width: min(720px, 90vw);
+  height: clamp(280px, 55vw, 420px);
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(135, 206, 235, 0.2);
+  background: rgba(2, 6, 16, 0.85);
+  box-shadow: 0 22px 45px rgba(6, 12, 28, 0.55);
+}
+
+.experience-globe canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.globe-loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+}
+
 .experience-timeline::before {
   content: '';
   position: absolute;

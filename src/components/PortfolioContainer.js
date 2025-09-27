@@ -9,9 +9,11 @@ import './PortfolioContainer.css';
 
 const PortfolioContainer = ({ onScrollChange, deviceType }) => {
   const containerRef = useRef(null);
+  const scrollAnimationFrameRef = useRef(null);
   const [currentSection, setCurrentSection] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const lastReportedSectionRef = useRef(-1);
+  const totalSections = 6;
 
   const portfolioData = useMemo(() => ({
     intro: {
@@ -160,85 +162,99 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
     return portfolioData.intro;
   }, [portfolioData]);
 
-  useEffect(() => {
-    if (!containerRef.current) return undefined;
+  const setActiveSection = useCallback((sectionIndex, progressValue) => {
+    setCurrentSection((prevSection) => (prevSection === sectionIndex ? prevSection : sectionIndex));
 
-    const updateActiveSection = () => {
+    const normalizedProgress = (() => {
+      if (typeof progressValue === 'number' && !Number.isNaN(progressValue)) {
+        return Math.min(Math.max(progressValue, 0), 1);
+      }
+      if (totalSections > 1) {
+        return sectionIndex / (totalSections - 1);
+      }
+      return 0;
+    })();
+
+    setScrollProgress((prevProgress) => (
+      Math.abs(prevProgress - normalizedProgress) < 0.001 ? prevProgress : normalizedProgress
+    ));
+
+    if (onScrollChange && lastReportedSectionRef.current !== sectionIndex) {
+      lastReportedSectionRef.current = sectionIndex;
+      const sectionData = getSectionData(sectionIndex);
+      onScrollChange({
+        section: sectionIndex,
+        data: sectionData,
+        progress: normalizedProgress
+      });
+    }
+  }, [getSectionData, onScrollChange, totalSections]);
+
+  useEffect(() => {
+    setActiveSection(0);
+  }, [setActiveSection]);
+
+  useEffect(() => {
+    const updateScrollState = () => {
+      const container = containerRef.current;
+      if (!container) return;
+
       const sections = Array.from(
-        containerRef.current.querySelectorAll('.portfolio-sections > .section')
+        container.querySelectorAll('.portfolio-sections > .section')
       );
+
       if (!sections.length) return;
 
-      const scrollY = window.scrollY;
-      const viewportHeight = window.innerHeight;
+      const viewportReference = window.innerHeight * 0.35;
+      let activeIndex = 0;
+      let smallestDistance = Infinity;
 
-      const sectionStates = sections
-        .map((ref, index) => {
-          if (!ref) return null;
-          const rect = ref.getBoundingClientRect();
-          const offsetTop = rect.top + scrollY;
-          const height = rect.height || viewportHeight;
-          const centerDistance = Math.abs(rect.top + rect.height / 2 - viewportHeight / 2);
-          return {
-            index,
-            centerDistance,
-            offsetTop,
-            height
-          };
-        })
-        .filter(Boolean)
-        .sort((a, b) => a.centerDistance - b.centerDistance);
+      sections.forEach((section, index) => {
+        const rect = section.getBoundingClientRect();
+        const sectionCenter = rect.top + rect.height / 2;
+        const distance = Math.abs(sectionCenter - viewportReference);
 
-      if (!sectionStates.length) return;
-
-      const active = sectionStates[0];
-      const totalSections = Math.max(sections.length, 1);
-
-      const documentHeight = Math.max(document.body.scrollHeight - viewportHeight, 1);
-      setScrollProgress(Math.min(1, Math.max(0, scrollY / documentHeight)));
-
-      setCurrentSection((prev) => {
-        if (prev !== active.index) {
-          return active.index;
+        if (distance < smallestDistance) {
+          smallestDistance = distance;
+          activeIndex = index;
         }
-        return prev;
       });
 
-      if (onScrollChange && lastReportedSectionRef.current !== active.index) {
-        lastReportedSectionRef.current = active.index;
-        const sectionData = getSectionData(active.index);
-        onScrollChange({
-          section: active.index,
-          data: sectionData,
-          progress: 0
-        });
-      }
+      const doc = document.documentElement;
+      const totalScrollable = doc.scrollHeight - doc.clientHeight;
+      const scrollTop = doc.scrollTop || window.pageYOffset;
+      const progress = totalScrollable > 0
+        ? scrollTop / totalScrollable
+        : activeIndex / Math.max(totalSections - 1, 1);
+
+      setActiveSection(activeIndex, progress);
     };
 
-    updateActiveSection();
+    const handleScroll = () => {
+      if (scrollAnimationFrameRef.current !== null) return;
 
-    let animationFrame = null;
-    const scheduleUpdate = () => {
-      if (animationFrame !== null) return;
-      animationFrame = window.requestAnimationFrame(() => {
-        animationFrame = null;
-        updateActiveSection();
+      scrollAnimationFrameRef.current = window.requestAnimationFrame(() => {
+        scrollAnimationFrameRef.current = null;
+        updateScrollState();
       });
     };
 
-    window.addEventListener('scroll', scheduleUpdate, { passive: true });
-    window.addEventListener('resize', scheduleUpdate, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+
+    updateScrollState();
 
     return () => {
-      if (animationFrame !== null) {
-        window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+      if (scrollAnimationFrameRef.current !== null) {
+        window.cancelAnimationFrame(scrollAnimationFrameRef.current);
+        scrollAnimationFrameRef.current = null;
       }
-      window.removeEventListener('scroll', scheduleUpdate);
-      window.removeEventListener('resize', scheduleUpdate);
     };
-  }, [getSectionData, onScrollChange]);
+  }, [setActiveSection, totalSections]);
 
-  const scrollToSection = (sectionIndex) => {
+  const scrollToSection = useCallback((sectionIndex) => {
     const sections = Array.from(
       containerRef.current?.querySelectorAll('.portfolio-sections > .section') || []
     );
@@ -246,7 +262,8 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
     if (targetSection) {
       targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  };
+    setActiveSection(sectionIndex);
+  }, [setActiveSection]);
 
   return (
     <div ref={containerRef} className="portfolio-container">
