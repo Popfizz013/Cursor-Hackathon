@@ -45,7 +45,6 @@ const ExperienceSection = forwardRef(({ data, deviceType, isActive }, ref) => {
       <div className="section-content">
         {!showGlobe && (
           <div className="section-header">
-            <div className="section-number">03</div>
             <h2 className="section-title">Professional Experience</h2>
             <p className="section-description">
               My journey in software development and technology

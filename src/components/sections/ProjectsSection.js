@@ -13,7 +13,6 @@ const ProjectsSection = forwardRef(({ data, deviceType, isActive }, ref) => {
     >
       <div className="section-content">
         <div className="section-header">
-          <div className="section-number">04</div>
           <h2 className="section-title">Personal Projects</h2>
           <p className="section-description">
             Innovative projects that showcase my technical skills and passion for learning

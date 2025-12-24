@@ -54,7 +54,6 @@ const JobSection = ({ data, deviceType, isActive, sectionIndex }) => {
           className="section-header"
           variants={itemVariants}
         >
-          <div className="section-number">0{sectionIndex}</div>
           <h2 className="section-title">{data.company}</h2>
         </motion.div>
 

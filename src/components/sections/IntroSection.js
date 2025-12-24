@@ -24,14 +24,6 @@ const IntroSection = forwardRef(({ data }, ref) => {
               <p>Working on satellite communication protocols</p>
             </div>
           </div>
-
-          <div className="intro-contact">
-            <div className="contact-info">
-              <p><strong>📍 {data.location}</strong></p>
-              <p><strong>📧 {data.email}</strong></p>
-              <p><strong>📞 {data.phone}</strong></p>
-            </div>
-          </div>
         </div>
       </div>
     </section>

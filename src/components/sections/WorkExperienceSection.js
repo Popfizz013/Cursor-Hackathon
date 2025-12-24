@@ -109,7 +109,6 @@ const WorkExperienceSection = ({ deviceType, isActive, onGlobeScroll }) => {
           className="section-header"
           variants={itemVariants}
         >
-          <div className="section-number">02</div>
           <h2 className="section-title">Work Experience</h2>
           <p className="section-description">
             Scroll to explore my professional journey through interactive 3D visualization

@@ -7,13 +7,13 @@
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   overflow-x: hidden;
   background: var(--space-gradient);
-  padding-top: clamp(72px, 12vh, 120px);
+  padding-top: 0;
 }
 
 /* Navigation */
 .portfolio-nav {
   position: fixed;
-  top: 3px;
+  top: 0;
   left: 0;
   right: 0;
   z-index: 1050;
@@ -22,14 +22,15 @@
   backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(135, 206, 235, 0.15);
   box-shadow: 0 12px 30px rgba(4, 12, 32, 0.45);
+  padding: 0.5rem 0;
 }
 
 .nav-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 1rem 2rem;
+  padding: 1.35rem 2rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 
@@ -45,8 +46,9 @@
 
 .nav-sections {
   display: flex;
-  gap: 2rem;
+  gap: 5rem;
   align-items: center;
+  justify-content: center;
 }
 
 .nav-item {

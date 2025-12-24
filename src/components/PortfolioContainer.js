@@ -270,9 +270,6 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
       {/* Navigation */}
       <nav className="portfolio-nav">
         <div className="nav-content">
-          <div className="nav-logo">
-            <h2>Portfolio</h2>
-          </div>
           <div className="nav-sections">
             <button 
               className={`nav-item ${currentSection === 0 ? 'active' : ''}`}
