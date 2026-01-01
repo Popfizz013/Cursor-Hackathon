@@ -62,25 +62,6 @@ const ProjectsSection = forwardRef(({ data, deviceType, isActive }, ref) => {
           ))}
         </div>
 
-        <div className="projects-summary">
-          <h3>Impact At a Glance</h3>
-          <div className="impact-grid">
-            <div className="impact-item">
-              <div className="impact-icon">🛰️</div>
-              <div className="impact-text">
-                <h4>MARMOTSAT</h4>
-                <p>Designed communication protocol for UVic&apos;s satellite project.</p>
-              </div>
-            </div>
-            <div className="impact-item">
-              <div className="impact-icon">🏁</div>
-              <div className="impact-text">
-                <h4>AWS DeepRacer</h4>
-                <p>Optimized reinforcement learning reward functions for racing AI.</p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

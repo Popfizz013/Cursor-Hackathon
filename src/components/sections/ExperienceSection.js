@@ -152,27 +152,6 @@ const ExperienceSection = forwardRef(({ data, deviceType, isActive }, ref) => {
               ))}
             </div>
 
-            <div className="experience-summary" aria-hidden={showGlobe}>
-              <h3>Career Highlights</h3>
-              <div className="highlights-grid">
-                <div className="highlight-item">
-                  <div className="highlight-number">3+</div>
-                  <div className="highlight-label">Years Experience</div>
-                </div>
-                <div className="highlight-item">
-                  <div className="highlight-number">2</div>
-                  <div className="highlight-label">Co-op Positions</div>
-                </div>
-                <div className="highlight-item">
-                  <div className="highlight-number">8+</div>
-                  <div className="highlight-label">Technologies Mastered</div>
-                </div>
-                <div className="highlight-item">
-                  <div className="highlight-number">1</div>
-                  <div className="highlight-label">Teaching Role</div>
-                </div>
-              </div>
-            </div>
           </>
         )}
       </div>
