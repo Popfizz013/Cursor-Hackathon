@@ -84,6 +84,12 @@
   text-align: left;
 }
 
+/* Center the experience section description only */
+.experience-section .section-header .section-description {
+  align-self: center;
+  text-align: center;
+}
+
 /* Intro Section Specific */
 .intro-section {
   background: transparent;
