@@ -12,12 +12,7 @@
   z-index: 9999;
   color: white;
   font-family: Arial, sans-serif;
-  transition: opacity 0.5s ease-out;
-}
-
-#loading.hidden {
-  opacity: 0;
-  pointer-events: none;
+  transition: opacity 0.5s ease-out, pointer-events 0s linear 0.5s;
 }
 
 #loading .loading-content {
@@ -32,6 +27,11 @@
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 20px;
+}
+
+body.app-mounted #loading {
+  opacity: 0;
+  pointer-events: none;
 }
 
 @keyframes spin {

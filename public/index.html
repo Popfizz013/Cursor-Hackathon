@@ -4,16 +4,7 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Theme color with feature detection -->
-    <script>
-      // Only add theme-color meta tag for browsers that support it
-      if (window.CSS && CSS.supports && CSS.supports('color', '#000000')) {
-        const themeColorMeta = document.createElement('meta');
-        themeColorMeta.name = 'theme-color';
-        themeColorMeta.content = '#000000';
-        document.head.appendChild(themeColorMeta);
-      }
-    </script>
+    <meta name="theme-color" content="#000000" />
     <!-- Fallback for older browsers -->
     <meta name="msapplication-navbutton-color" content="#000000" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -35,18 +26,14 @@
     <!-- Performance hints -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-    
-    <!-- Loading styles -->
     <link rel="stylesheet" href="%PUBLIC_URL%/loading.css">
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    
-    <!-- Loading indicator -->
-    <div id="loading">
+    <div id="loading" role="status" aria-live="polite">
       <div class="loading-content">
-        <div class="spinner"></div>
+        <div class="spinner" aria-hidden="true"></div>
         <p>Loading 3D Globe...</p>
       </div>
     </div>
