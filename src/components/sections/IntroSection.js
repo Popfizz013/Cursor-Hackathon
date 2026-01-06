@@ -12,15 +12,15 @@ const IntroSection = forwardRef(({ data }, ref) => {
 
           <div className="intro-features">
             <div className="feature-item">
-              <h4>🎓 Computer Science Student</h4>
+              <h4>Computer Science Student</h4>
               <p>Pursuing BSc at University of Victoria</p>
             </div>
             <div className="feature-item">
-              <h4>💻 Full-Stack Developer</h4>
+              <h4>Full-Stack Developer</h4>
               <p>React, Node.js, Python, and modern technologies</p>
             </div>
             <div className="feature-item">
-              <h4>🔬 Research & Innovation</h4>
+              <h4>Research & Innovation</h4>
               <p>Working on satellite communication protocols</p>
             </div>
           </div>
