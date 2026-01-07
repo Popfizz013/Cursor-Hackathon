@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import IntroSection from './sections/IntroSection.jsx';
 import SkillsSection from './sections/SkillsSection.jsx';
 import ExperienceSection from './sections/ExperienceSection.jsx';
-import ProjectsSection from './sections/ProjectSection.jsx';
+import ProjectsSection from './sections/ProjectsSection.jsx';
 import EducationSection from './sections/EducationSection.jsx';
 import ContactSection from './sections/ContactSection.jsx';
 import './PortfolioContainer.css';

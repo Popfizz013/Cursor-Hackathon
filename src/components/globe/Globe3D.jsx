@@ -90,7 +90,6 @@ const DetailedGlobe = ({ modelScale, deviceType }) => {
 };
 
 const Globe3D = ({ deviceType, activeChapter, info }) => {
-	const meshRef = useRef();
 	const groupRef = useRef();
 	const [targetRotation, setTargetRotation] = useState(new THREE.Euler(0, 0, 0));
 	const currentRotationRef = useRef(new THREE.Euler(0, 0, 0));
@@ -200,10 +199,8 @@ const Globe3D = ({ deviceType, activeChapter, info }) => {
 						<icosahedronGeometry args={[1, 2]} />
 						<meshStandardMaterial
 							color="#4da1ff"
-							metalness={0.2}
-							roughness={0.45}
-							emissive="#0b1d3b"
-							emissiveIntensity={0.4}
+							metalness={0.25}
+							roughness={0.4}
 						/>
 					</mesh>
 					<mesh scale={modelScale * 1.1}>
@@ -212,7 +209,7 @@ const Globe3D = ({ deviceType, activeChapter, info }) => {
 						<meshBasicMaterial
 							color="#87ceeb"
 							transparent
-							opacity={0.12}
+							opacity={0.1}
 							side={THREE.BackSide}
 						/>
 					</mesh>
@@ -224,9 +221,4 @@ const Globe3D = ({ deviceType, activeChapter, info }) => {
 	);
 };
 
-if (typeof window !== 'undefined') {
-	useGLTF.preload(modelPath);
-}
-
 export default Globe3D;
-/* eslint-enable react/no-unknown-property */

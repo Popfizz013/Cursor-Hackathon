@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
-import './SectionStyles.css';
+import '../../sections/SectionStyles.css';
 
-const ContactSection = forwardRef(({ data, deviceType, isActive }, ref) => {
+const ContactSection = forwardRef(({ data, isActive }, ref) => {
 	return (
 		<section
 			ref={ref}

@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
-import './SectionStyles.css';
+import '../../sections/SectionStyles.css';
 
-const SkillsSection = forwardRef(({ data, deviceType, isActive }, ref) => {
+const SkillsSection = forwardRef(({ data, isActive }, ref) => {
 	if (!data) return null;
 
 	return (
@@ -27,7 +27,7 @@ const SkillsSection = forwardRef(({ data, deviceType, isActive }, ref) => {
 						>
 							<h3 className="category-title">{category.name}</h3>
 							<div className="skill-tags">
-								{category.skills.map((skill, skillIndex) => (
+								{category.skills.map((skill) => (
 									<span
 										key={skill}
 										className="skill-tag"

@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import './SectionStyles.css';
+import '../../sections/SectionStyles.css';
 
 const IntroSection = forwardRef(({ data }, ref) => {
 	return (

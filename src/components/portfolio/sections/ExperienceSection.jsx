@@ -1,8 +1,8 @@
 import React, { forwardRef, useMemo, useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
-import Globe3D from '../Globe3D';
-import './SectionStyles.css';
+import Globe3D from '../../globe/Globe3D.jsx';
+import '../../sections/SectionStyles.css';
 
 const ExperienceSection = forwardRef(({ data, deviceType, isActive }, ref) => {
 	const experiences = useMemo(() => (Array.isArray(data) ? data : []), [data]);

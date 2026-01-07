@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { LoadGLTFByPath } from './Helpers/ModelHelper.js'
+import { LoadGLTFByPath } from './helpers/model/ModelHelper.jsx'
 
 let renderer = new THREE.WebGLRenderer({
 	canvas: document.querySelector('#background'),

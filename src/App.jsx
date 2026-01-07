@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import PortfolioContainer from './components/PortfolioContainer';
+import PortfolioContainer from './components/portfolio/PortfolioContainer.jsx';
 import useResponsive from './hooks/useResponsive.jsx';
 import './styles/App.css';
 
@@ -23,7 +23,8 @@ function App({ onReady }) {
 		return () => clearTimeout(timer);
 	}, [onReady]);
 
-	const handleSectionChange = useCallback(({ section, data, progress }) => {
+	const handleSectionChange = useCallback(() => {
+		return undefined;
 	}, []);
 
 	if (!isLoaded) {

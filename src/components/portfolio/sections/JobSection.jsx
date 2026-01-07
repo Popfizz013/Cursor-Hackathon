@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import './SectionStyles.css';
+import '../../sections/SectionStyles.css';
 
 const JobSection = ({ data, deviceType, isActive, sectionIndex }) => {
 	const sectionRef = useRef(null);

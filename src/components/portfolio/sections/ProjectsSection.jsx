@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
-import './SectionStyles.css';
+import '../../sections/SectionStyles.css';
 
-const ProjectsSection = forwardRef(({ data, deviceType, isActive }, ref) => {
+const ProjectsSection = forwardRef(({ data, isActive }, ref) => {
 	if (!data || !Array.isArray(data)) return null;
 
 	return (
@@ -20,7 +20,7 @@ const ProjectsSection = forwardRef(({ data, deviceType, isActive }, ref) => {
 				</div>
 
 				<div className="projects-grid">
-					{data.map((project, index) => (
+					{data.map((project) => (
 						<div
 							key={project.id}
 							className="project-card"
