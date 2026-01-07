@@ -1563,6 +1563,24 @@
   .job-visual {
     height: 250px;
   }
+
+  /* Stack tech labels and tags vertically on small screens */
+  .job-technologies,
+  .projects-section .project-card .project-technologies {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+  }
+
+  .projects-section .project-card .project-technologies h5 {
+    margin-bottom: 0.1rem;
+    white-space: normal;
+  }
+
+  .tech-tags {
+    justify-content: flex-start;
+  }
   
   .globe-preview {
     width: 200px;
