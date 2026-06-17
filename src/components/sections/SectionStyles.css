@@ -1,6 +1,21 @@
 .experience-section.globe-active .experience-globe {
   display: block;
 }
+
+/* Globe interlude — transparent canvas between Intro and Skills */
+.globe-interlude {
+  width: 100%;
+  height: 100vh;
+  background: transparent;
+  position: relative;
+}
+
+.globe-interlude canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  background: transparent !important;
+}
 /* Shared Section Styles */
 .section {
   min-height: 100vh;
