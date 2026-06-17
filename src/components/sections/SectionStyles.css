@@ -118,17 +118,22 @@
 }
 
 .feature-item {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--space-card-bg);
   padding: 1.5rem;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--space-border);
   text-align: center;
   transition: all 0.3s ease;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--space-glow);
 }
 
 .feature-item:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--space-surface-strong);
+  border-color: rgba(135, 206, 235, 0.3);
   transform: translateY(-5px);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.7), 0 0 50px rgba(4, 30, 80, 0.35);
 }
 
 .feature-item h4 {
@@ -207,7 +212,7 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: linear-gradient(45deg, #1a1a2e, #16213e);
+  background: var(--space-card-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -337,7 +342,7 @@
 
 /* Job Section Specific */
 .job-section {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0c0c0c 100%);
+  background: transparent;
 }
 
 .job-grid {
@@ -548,8 +553,8 @@
   height: 100%;
   border-radius: 12px;
   overflow: hidden;
-  background: linear-gradient(45deg, #1a1a2e, #16213e);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  background: var(--space-card-bg);
+  box-shadow: var(--space-glow);
 }
 
 .job-image-placeholder {
@@ -670,18 +675,22 @@
 }
 
 .lorem-highlight {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--space-card-bg);
   padding: 2rem;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--space-border);
   text-align: center;
   transition: all 0.3s ease;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--space-glow);
 }
 
 .lorem-highlight:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--space-surface-strong);
+  border-color: rgba(135, 206, 235, 0.28);
   transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.7), 0 0 50px rgba(4, 30, 80, 0.35);
 }
 
 .lorem-highlight h4 {
@@ -702,7 +711,7 @@
 
 /* Work Experience Section Specific */
 .work-experience-section {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0c0c0c 100%);
+  background: transparent;
   min-height: 100vh;
   position: relative;
   padding: 4rem 2rem;
@@ -714,10 +723,11 @@
   margin: 2rem 0;
   border-radius: 20px;
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(2, 6, 16, 0.80);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--space-border);
+  box-shadow: var(--space-glow);
 }
 
 .globe-wrapper {
@@ -984,16 +994,21 @@
 }
 
 .skill-category {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--space-card-bg);
   padding: 2rem;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--space-border);
   transition: all 0.3s ease;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--space-glow);
 }
 
 .skill-category:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--space-surface-strong);
+  border-color: rgba(135, 206, 235, 0.28);
   transform: translateY(-5px);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.7), 0 0 50px rgba(4, 30, 80, 0.35);
 }
 
 .skill-category h4 {
@@ -1128,18 +1143,22 @@
 }
 
 .lorem-feature {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--space-card-bg);
   padding: 2rem;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--space-border);
   text-align: center;
   transition: all 0.3s ease;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--space-glow);
 }
 
 .lorem-feature:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--space-surface-strong);
+  border-color: rgba(135, 206, 235, 0.28);
   transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.7), 0 0 50px rgba(4, 30, 80, 0.35);
 }
 
 .lorem-feature h4 {
@@ -1178,20 +1197,22 @@
 }
 
 .contact-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--space-card-bg);
+  border: 1px solid var(--space-border);
   border-radius: 12px;
   padding: 2rem;
   text-align: center;
   transition: all 0.3s ease;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  box-shadow: var(--space-glow);
 }
 
 .contact-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(135, 206, 235, 0.3);
+  background: var(--space-surface-strong);
+  border-color: rgba(135, 206, 235, 0.30);
   transform: translateY(-5px);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.7), 0 0 50px rgba(4, 30, 80, 0.35);
 }
 
 .contact-icon {
@@ -1245,12 +1266,13 @@
 }
 
 .contact-form-container {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--space-card-bg);
+  border: 1px solid var(--space-border);
   border-radius: 12px;
   padding: 2rem;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  box-shadow: var(--space-glow);
 }
 
 .contact-form h4 {
@@ -1371,18 +1393,22 @@
 }
 
 .lorem-contact-feature {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--space-card-bg);
   padding: 2rem;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--space-border);
   text-align: center;
   transition: all 0.3s ease;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--space-glow);
 }
 
 .lorem-contact-feature:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--space-surface-strong);
+  border-color: rgba(135, 206, 235, 0.28);
   transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.7), 0 0 50px rgba(4, 30, 80, 0.35);
 }
 
 .lorem-contact-feature h4 {
@@ -1426,18 +1452,22 @@
 }
 
 .lorem-item {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--space-card-bg);
   padding: 2rem;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--space-border);
   text-align: center;
   transition: all 0.3s ease;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--space-glow);
 }
 
 .lorem-item:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--space-surface-strong);
+  border-color: rgba(135, 206, 235, 0.28);
   transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.7), 0 0 50px rgba(4, 30, 80, 0.35);
 }
 
 .lorem-item h4 {
@@ -1510,18 +1540,22 @@
 }
 
 .final-content-item {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--space-card-bg);
   padding: 2rem;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--space-border);
   text-align: center;
   transition: all 0.3s ease;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--space-glow);
 }
 
 .final-content-item:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--space-surface-strong);
+  border-color: rgba(135, 206, 235, 0.28);
   transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.7), 0 0 50px rgba(4, 30, 80, 0.35);
 }
 
 .final-content-item h4 {

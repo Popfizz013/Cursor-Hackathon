@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PortfolioContainer from './components/portfolio/PortfolioContainer.jsx';
+import StarBackground from './components/background/StarBackground.jsx';
 import useResponsive from './hooks/useResponsive.jsx';
 import './styles/App.css';
 
@@ -40,6 +41,7 @@ function App({ onReady }) {
 
 	return (
 		<div className="app">
+			<StarBackground />
 			<PortfolioContainer deviceType={deviceType} onScrollChange={handleSectionChange} />
 		</div>
 	);
