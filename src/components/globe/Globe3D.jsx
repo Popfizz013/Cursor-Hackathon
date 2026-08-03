@@ -12,7 +12,7 @@ const modelPath = `${process.env.PUBLIC_URL}/models/earth_cartoon.glb`;
 const SECTION_ROTATIONS = [
 	{ x: 0.15, y: Math.PI / 5, z: 0 },        // intro (hidden)
 	{ x: 0, y: Math.PI / 4, z: 0 },           // skills (hidden)
-	{ x: 0.15, y: Math.PI / 5, z: 0 },        // globe interlude (flight start)
+	{ x: Math.PI / 6, y: Math.PI / 2, z: 0 }, // globe interlude tail (= flight end pose)
 	{ x: Math.PI / 6, y: Math.PI / 2, z: 0 }, // experience
 	{ x: -Math.PI / 4, y: Math.PI, z: 0 },    // projects
 	{ x: 0.1, y: Math.PI * 4 / 3, z: 0 },     // education
@@ -164,18 +164,22 @@ const Globe3D = ({ deviceType, section, progress, dragRef, reducedMotion }) => {
 		deviceType === 'mobile' ? 0.65 : deviceType === 'tablet' ? 0.85 : 1.0
 	), [deviceType]);
 
-	// Progress through the interlude's scroll runway: 0 when its top reaches
-	// the viewport top, 1 when its bottom meets the viewport bottom.
+	// Where we are relative to the interlude's scroll runway. progress is 0
+	// when the section top reaches the viewport top (= the moment the globe
+	// pins centred) and 1 when its bottom meets the viewport bottom.
 	const measureRunway = () => {
 		if (!runwayElRef.current || !runwayElRef.current.isConnected) {
 			runwayElRef.current = document.querySelector('.globe-section');
 		}
 		const el = runwayElRef.current;
-		if (!el) return 0;
+		if (!el) return null;
 		const rect = el.getBoundingClientRect();
 		const span = rect.height - window.innerHeight;
-		if (span <= 0) return 0;
-		return Math.min(Math.max(-rect.top / span, 0), 1);
+		if (span <= 0) return null;
+		return {
+			approaching: rect.top > 0,
+			progress: Math.min(Math.max(-rect.top / span, 0), 1)
+		};
 	};
 
 	useFrame((state, delta) => {
@@ -184,9 +188,19 @@ const Globe3D = ({ deviceType, section, progress, dragRef, reducedMotion }) => {
 		let target;
 		let cameraTargetZ = DEFAULT_CAMERA_Z;
 
-		if (section === INTERLUDE_SECTION) {
-			// Scroll scrubs the flight; the damped spring below keeps it silky.
-			const flight = sampleFlight(measureRunway());
+		// The flight is keyed to runway geometry, NOT the detected section —
+		// section detection flips late, which used to start the dive with a
+		// lurch. The animation begins the moment the globe pins centred.
+		const runway = measureRunway();
+
+		if (runway && runway.approaching) {
+			// Sliding in with the section: hold the flight's start pose so the
+			// globe arrives centred, composed, and only then begins to move.
+			const start = FLIGHT_KEYFRAMES[0];
+			target = { x: start.x, y: start.y, z: start.z };
+		} else if (runway && runway.progress < 1) {
+			// Pinned: scroll scrubs the flight; the damped spring keeps it silky.
+			const flight = sampleFlight(runway.progress);
 			target = { x: flight.x, y: flight.y, z: flight.z };
 			if (!reducedMotion) {
 				cameraTargetZ = flight.camZ;
