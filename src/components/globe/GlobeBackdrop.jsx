@@ -7,14 +7,18 @@ import './GlobeBackdrop.css';
 const DRAG_SENSITIVITY = 0.005;
 const DRAG_LIMIT = 0.6;
 
-// The globe stays hidden until its own interlude section (between Skills
-// and Experience) — its first appearance is the full centre-stage reveal.
-// Past the interlude it stays on as a dimmed backdrop behind content.
-const REVEAL_SECTION = 2;
+// The globe's own interlude section (between Skills and Experience). No
+// fade-in: the wrapper is translated by the interlude's top edge so the
+// globe scrolls in WITH its section, pins for the flight, then stays on
+// as a dimmed backdrop behind the content sections that follow.
+const INTERLUDE_SECTION = 2;
 
 const clamp = (value, limit) => Math.min(Math.max(value, -limit), limit);
 
 const GlobeBackdrop = ({ section, progress, deviceType }) => {
+	const wrapperRef = useRef(null);
+	const runwayElRef = useRef(null);
+	const frameRef = useRef(null);
 	const dragRef = useRef({ x: 0, y: 0, active: false });
 	const lastPointerRef = useRef({ x: 0, y: 0 });
 	const [reducedMotion, setReducedMotion] = useState(false);
@@ -26,6 +30,40 @@ const GlobeBackdrop = ({ section, progress, deviceType }) => {
 		const handleChange = (event) => setReducedMotion(event.matches);
 		query.addEventListener('change', handleChange);
 		return () => query.removeEventListener('change', handleChange);
+	}, []);
+
+	// Anchor the fixed wrapper to the interlude while approaching it: offset
+	// by the section's top edge (never negative), so it rides the page until
+	// the runway starts, then pins. Direct style mutation — no re-renders.
+	useEffect(() => {
+		const place = () => {
+			frameRef.current = null;
+			if (!wrapperRef.current) return;
+			if (!runwayElRef.current || !runwayElRef.current.isConnected) {
+				runwayElRef.current = document.querySelector('.globe-section');
+			}
+			const el = runwayElRef.current;
+			const top = el ? Math.max(el.getBoundingClientRect().top, 0) : 0;
+			wrapperRef.current.style.transform = `translateY(${top}px)`;
+		};
+
+		const schedule = () => {
+			if (frameRef.current !== null) return;
+			frameRef.current = window.requestAnimationFrame(place);
+		};
+
+		window.addEventListener('scroll', schedule, { passive: true });
+		window.addEventListener('resize', schedule, { passive: true });
+		place();
+
+		return () => {
+			window.removeEventListener('scroll', schedule);
+			window.removeEventListener('resize', schedule);
+			if (frameRef.current !== null) {
+				window.cancelAnimationFrame(frameRef.current);
+				frameRef.current = null;
+			}
+		};
 	}, []);
 
 	const handlePointerDown = useCallback((event) => {
@@ -52,14 +90,12 @@ const GlobeBackdrop = ({ section, progress, deviceType }) => {
 		dragRef.current.active = false;
 	}, []);
 
-	const backdropClass = [
-		'globe-backdrop',
-		section >= REVEAL_SECTION ? 'globe-backdrop--visible' : '',
-		section > REVEAL_SECTION ? 'globe-backdrop--dimmed' : ''
-	].filter(Boolean).join(' ');
+	const backdropClass = section > INTERLUDE_SECTION
+		? 'globe-backdrop globe-backdrop--dimmed'
+		: 'globe-backdrop';
 
 	return (
-		<div className={backdropClass} aria-hidden="true">
+		<div ref={wrapperRef} className={backdropClass} aria-hidden="true">
 			<Canvas
 				gl={{ alpha: true, antialias: true }}
 				camera={{
