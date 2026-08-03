@@ -33,7 +33,7 @@ function App({ onReady }) {
 			<div className="app-loading">
 				<div className="loading-spinner">
 					<div className="spinner"></div>
-					<p>Initializing 3D Globe...</p>
+					<p>Loading portfolio...</p>
 				</div>
 			</div>
 		);

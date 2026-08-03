@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import IntroSection from './sections/IntroSection.jsx';
-import GlobeInterlude from './sections/GlobeInterlude.jsx';
 import SkillsSection from './sections/SkillsSection.jsx';
 import ExperienceSection from './sections/ExperienceSection.jsx';
 import ProjectsSection from './sections/ProjectsSection.jsx';
@@ -327,8 +326,6 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
 					deviceType={deviceType}
 					isActive={currentSection === 0}
 				/>
-
-				<GlobeInterlude deviceType={deviceType} />
 
 				<SkillsSection
 					data={portfolioData.skills}
