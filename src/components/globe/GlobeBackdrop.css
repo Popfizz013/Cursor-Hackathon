@@ -1,0 +1,46 @@
+/* Ambient planet at the right edge — above the starfield (z 0),
+   beneath section content (z 2). */
+.globe-backdrop {
+  position: fixed;
+  top: 50%;
+  right: -12vmin;
+  transform: translateY(-50%);
+  width: 58vmin;
+  height: 58vmin;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.globe-backdrop canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  background: transparent !important;
+}
+
+/* Drag-to-nudge hotspot: only over the globe itself, so page content is
+   never blocked. Fine-pointer devices only — touch keeps native scroll. */
+.globe-backdrop__hotspot {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+}
+
+.globe-backdrop__hotspot:active {
+  cursor: grabbing;
+}
+
+@media (hover: none), (max-width: 900px) {
+  .globe-backdrop {
+    width: 46vmin;
+    right: -18vmin;
+    opacity: 0.55;
+  }
+
+  .globe-backdrop__hotspot {
+    display: none;
+  }
+}
