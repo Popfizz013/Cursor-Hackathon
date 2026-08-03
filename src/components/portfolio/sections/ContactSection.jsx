@@ -6,7 +6,7 @@ const ContactSection = forwardRef(({ data, isActive }, ref) => {
 		<section
 			ref={ref}
 			className={`contact-section section ${isActive ? 'active' : ''}`}
-			data-section-index={5}
+			data-section-index={6}
 			style={{ opacity: isActive ? 1 : 0.95 }}
 		>
 			<div className="section-content">

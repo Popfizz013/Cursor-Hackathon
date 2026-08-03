@@ -1,3 +1,10 @@
+/* Globe interlude — an empty full-viewport stage between Skills and
+   Experience. pointer-events: none so drags fall through to the globe's
+   hotspot (the fixed backdrop sits beneath the section layer). */
+.globe-section {
+  pointer-events: none;
+}
+
 /* Shared Section Styles */
 .section {
   min-height: 100vh;

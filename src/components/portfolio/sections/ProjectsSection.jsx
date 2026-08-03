@@ -8,7 +8,7 @@ const ProjectsSection = forwardRef(({ data, isActive }, ref) => {
 		<section 
 			ref={ref}
 			className={`projects-section section ${isActive ? 'active' : ''}`}
-			data-section-index={3}
+			data-section-index={4}
 			style={{ opacity: isActive ? 1 : 0.95 }}
 		>
 			<div className="section-content">

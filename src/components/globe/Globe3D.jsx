@@ -7,10 +7,12 @@ import * as THREE from 'three';
 const modelPath = `${process.env.PUBLIC_URL}/models/earth_cartoon.glb`;
 
 // One pose per portfolio section; y advances so the globe keeps turning
-// forward as the visitor scrolls down the page.
+// forward as the visitor scrolls down the page. Index 2 is the globe's own
+// interlude — the hero framing the visitor sees first.
 const SECTION_ROTATIONS = [
-	{ x: 0.15, y: Math.PI / 5, z: 0 },        // intro
-	{ x: 0, y: Math.PI / 4, z: 0 },           // skills
+	{ x: 0.15, y: Math.PI / 5, z: 0 },        // intro (hidden)
+	{ x: 0, y: Math.PI / 4, z: 0 },           // skills (hidden)
+	{ x: 0.15, y: Math.PI / 5, z: 0 },        // globe interlude — hero pose
 	{ x: Math.PI / 6, y: Math.PI / 2, z: 0 }, // experience
 	{ x: -Math.PI / 4, y: Math.PI, z: 0 },    // projects
 	{ x: 0.1, y: Math.PI * 4 / 3, z: 0 },     // education

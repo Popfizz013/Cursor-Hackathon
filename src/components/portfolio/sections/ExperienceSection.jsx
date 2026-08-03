@@ -21,7 +21,7 @@ const ExperienceSection = forwardRef(({ data, isActive }, ref) => {
 		<section
 			ref={ref}
 			className={sectionClassNames}
-			data-section-index={2}
+			data-section-index={3}
 			style={{ opacity: isActive ? 1 : 0.95 }}
 		>
 			<div className="section-content">

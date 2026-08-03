@@ -17,7 +17,7 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
 	const [currentSection, setCurrentSection] = useState(0);
 	const [scrollProgress, setScrollProgress] = useState(0);
 	const lastReportedSectionRef = useRef(-1);
-	const totalSections = 6;
+	const totalSections = 7;
 
 	const portfolioData = useMemo(() => ({
 		intro: {
@@ -154,10 +154,11 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
 	const getSectionData = useCallback((sectionIndex) => {
 		if (sectionIndex === 0) return portfolioData.intro;
 		if (sectionIndex === 1) return portfolioData.skills;
-		if (sectionIndex === 2) return { type: 'experience', data: portfolioData.experience };
-		if (sectionIndex === 3) return { type: 'projects', data: portfolioData.projects };
-		if (sectionIndex === 4) return portfolioData.education;
-		if (sectionIndex === 5) {
+		if (sectionIndex === 2) return { type: 'globe' };
+		if (sectionIndex === 3) return { type: 'experience', data: portfolioData.experience };
+		if (sectionIndex === 4) return { type: 'projects', data: portfolioData.projects };
+		if (sectionIndex === 5) return portfolioData.education;
+		if (sectionIndex === 6) {
 			return {
 				...portfolioData.contact,
 				type: 'contact-info'
@@ -298,27 +299,27 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
 						>
 							Skills
 						</button>
-						<button 
-							className={`nav-item ${currentSection === 2 ? 'active' : ''}`}
-							onClick={() => scrollToSection(2)}
-						>
-							Experience
-						</button>
-						<button 
+						<button
 							className={`nav-item ${currentSection === 3 ? 'active' : ''}`}
 							onClick={() => scrollToSection(3)}
 						>
-							Projects
+							Experience
 						</button>
-							<button 
+						<button
 							className={`nav-item ${currentSection === 4 ? 'active' : ''}`}
 							onClick={() => scrollToSection(4)}
+						>
+							Projects
+						</button>
+							<button
+							className={`nav-item ${currentSection === 5 ? 'active' : ''}`}
+							onClick={() => scrollToSection(5)}
 							>
 							Education
 							</button>
-						<button 
-							className={`nav-item ${currentSection === 5 ? 'active' : ''}`}
-							onClick={() => scrollToSection(5)}
+						<button
+							className={`nav-item ${currentSection === 6 ? 'active' : ''}`}
+							onClick={() => scrollToSection(6)}
 						>
 							Contact
 						</button>
@@ -347,29 +348,37 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
 					deviceType={deviceType}
 					isActive={currentSection === 1}
 				/>
-        
+
+				{/* Full-viewport stage for the globe — the fixed backdrop reveals
+				    centred here, with nothing else on screen */}
+				<section
+					className="section globe-section"
+					data-section-index={2}
+					aria-hidden="true"
+				/>
+
 				<ExperienceSection
 					data={portfolioData.experience}
 					deviceType={deviceType}
-					isActive={currentSection === 2}
+					isActive={currentSection === 3}
 				/>
-        
+
 				<ProjectsSection
 					data={portfolioData.projects}
 					deviceType={deviceType}
-					isActive={currentSection === 3}
+					isActive={currentSection === 4}
 				/>
-        
+
 				<EducationSection
 					data={portfolioData.education}
 					deviceType={deviceType}
-					isActive={currentSection === 4}
+					isActive={currentSection === 5}
 				/>
-        
+
 				<ContactSection
 					data={portfolioData.contact}
 					deviceType={deviceType}
-					isActive={currentSection === 5}
+					isActive={currentSection === 6}
 				/>
 			</div>
 		</div>

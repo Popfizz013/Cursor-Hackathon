@@ -7,6 +7,11 @@ import './GlobeBackdrop.css';
 const DRAG_SENSITIVITY = 0.005;
 const DRAG_LIMIT = 0.6;
 
+// The globe stays hidden until its own interlude section (between Skills
+// and Experience) — its first appearance is the full centre-stage reveal.
+// Past the interlude it stays on as a dimmed backdrop behind content.
+const REVEAL_SECTION = 2;
+
 const clamp = (value, limit) => Math.min(Math.max(value, -limit), limit);
 
 const GlobeBackdrop = ({ section, progress, deviceType }) => {
@@ -47,8 +52,14 @@ const GlobeBackdrop = ({ section, progress, deviceType }) => {
 		dragRef.current.active = false;
 	}, []);
 
+	const backdropClass = [
+		'globe-backdrop',
+		section >= REVEAL_SECTION ? 'globe-backdrop--visible' : '',
+		section > REVEAL_SECTION ? 'globe-backdrop--dimmed' : ''
+	].filter(Boolean).join(' ');
+
 	return (
-		<div className="globe-backdrop" aria-hidden="true">
+		<div className={backdropClass} aria-hidden="true">
 			<Canvas
 				gl={{ alpha: true, antialias: true }}
 				camera={{
