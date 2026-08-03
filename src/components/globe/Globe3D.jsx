@@ -32,10 +32,10 @@ const FLIGHT_KEYFRAMES = [
 	{ p: 0, x: 0.15, y: Math.PI / 5, z: 0, camZ: 3 },     // wide hero framing
 	{ p: 0.26, x: 0.275, y: 0.02, z: 0, camZ: 1.28 },     // dive: city one
 	{ p: 0.4, x: 0.275, y: 0.02, z: 0, camZ: 1.28 },      // hold on city one
-	{ p: 0.55, x: 0.36, y: 0.35, z: 0, camZ: 2.2 },       // hop apex: pull back
+	{ p: 0.55, x: 0.36, y: 0.35, z: 0, camZ: 1.7 },       // hop apex: low arc
 	{ p: 0.68, x: 0.44, y: 0.68, z: 0, camZ: 1.28 },      // descend: city two
 	{ p: 0.82, x: 0.44, y: 0.68, z: 0, camZ: 1.28 },      // hold on city two
-	{ p: 1, x: Math.PI / 6, y: Math.PI / 2, z: 0, camZ: 3.4 } // full pull-out
+	{ p: 1, x: Math.PI / 6, y: Math.PI / 2, z: 0, camZ: 3 } // pull out to hero framing
 ];
 
 const smoothstep = (t) => t * t * (3 - 2 * t);
