@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 import React, { Suspense, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { useGLTF, MeshTransmissionMaterial } from '@react-three/drei';
+import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 
 const modelPath = `${process.env.PUBLIC_URL}/models/earth_cartoon.glb`;
@@ -78,15 +78,6 @@ const SimpleGlobe = ({ modelScale }) => (
 
 const DetailedGlobe = ({ modelScale, deviceType }) => {
 	const { scene } = useGLTF(modelPath);
-	const glassRef = useRef();
-
-	// The glass shell reads as sheen at a distance but fogs the surface at
-	// close range — hide it while the flight is diving.
-	useFrame((state) => {
-		if (glassRef.current) {
-			glassRef.current.visible = state.camera.position.z > 2.05;
-		}
-	});
 
 	const clonedScene = useMemo(() => {
 		if (!scene) return null;
@@ -129,20 +120,6 @@ const DetailedGlobe = ({ modelScale, deviceType }) => {
 			{clonedScene && (
 				<primitive object={clonedScene} scale={modelScale} position={[0, 0, 0]} />
 			)}
-			{/* Glass shell — the planet sealed in a marble */}
-			<mesh ref={glassRef} scale={modelScale * 1.08} renderOrder={2}>
-				<sphereGeometry args={[1, 32, 32]} />
-				<MeshTransmissionMaterial
-					thickness={0.18}
-					transmission={0.92}
-					anisotropy={0.18}
-					chromaticAberration={0.04}
-					roughness={0.12}
-					clearcoat={0.9}
-					clearcoatRoughness={0.12}
-					backside={false}
-				/>
-			</mesh>
 			{/* Faint navy atmospheric rim, desktop only */}
 			{deviceType === 'desktop' && (
 				<mesh scale={modelScale * 1.02} renderOrder={0}>
