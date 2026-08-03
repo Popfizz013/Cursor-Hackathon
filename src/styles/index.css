@@ -1,15 +1,14 @@
 /* Global Styles */
 :root {
-  --space-gradient: radial-gradient(circle at 20% 18%, rgba(72, 122, 220, 0.18), transparent 55%),
-                     radial-gradient(circle at 78% 12%, rgba(39, 104, 198, 0.14), transparent 60%),
-                     radial-gradient(circle at 50% 82%, rgba(87, 206, 235, 0.12), transparent 65%),
-                     linear-gradient(135deg, #050509 0%, #0f1b3d 50%, #020611 100%);
-  --space-surface: rgba(255, 255, 255, 0.05);
-  --space-surface-strong: rgba(255, 255, 255, 0.08);
-  --space-border: rgba(135, 206, 235, 0.35);
-  --space-border-soft: rgba(135, 206, 235, 0.18);
-  --space-text: rgba(255, 255, 255, 0.85);
-  --space-muted: rgba(255, 255, 255, 0.65);
+  --space-gradient: transparent;
+  --space-surface: rgba(4, 10, 28, 0.65);
+  --space-surface-strong: rgba(6, 15, 40, 0.80);
+  --space-border: rgba(135, 206, 235, 0.18);
+  --space-border-soft: rgba(135, 206, 235, 0.10);
+  --space-text: rgba(255, 255, 255, 0.90);
+  --space-muted: rgba(255, 255, 255, 0.60);
+  --space-glow: 0 20px 60px rgba(0, 0, 0, 0.65), 0 0 40px rgba(4, 30, 80, 0.25);
+  --space-card-bg: rgba(4, 10, 28, 0.65);
 }
 
 * {
@@ -26,7 +25,8 @@ html, body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--space-gradient);
+  /* Deep space black — star field renders above this via StarBackground */
+  background: #000008;
   color: var(--space-text);
 }
 
@@ -34,7 +34,7 @@ html, body {
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
-  background: var(--space-gradient);
+  background: transparent;
 }
 
 /* Loading Styles */
@@ -44,7 +44,7 @@ html, body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--space-gradient);
+  background: #000008;
   display: flex;
   align-items: center;
   justify-content: center;

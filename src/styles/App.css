@@ -4,7 +4,7 @@
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
-  background: var(--space-gradient);
+  background: transparent;
 }
 
 .app canvas {
@@ -20,14 +20,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at 15% 20%, rgba(39, 83, 145, 0.25), transparent 55%),
-              radial-gradient(circle at 85% 30%, rgba(23, 32, 62, 0.3), transparent 60%),
-              linear-gradient(135deg, #04070f 0%, #080f24 50%, #00030a 100%);
+  background: transparent;
   padding: clamp(2rem, 5vw, 4rem) 0;
 }
 
 .globe-section.globe-disabled {
-  background: linear-gradient(135deg, #04070f 0%, #080f24 100%);
+  background: transparent;
 }
 
 .globe-offline {
@@ -103,12 +101,7 @@
   }
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .app {
-    background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #1a1a1a 100%);
-  }
-}
+/* Dark mode: keep transparent — space background provided by StarBackground */
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {

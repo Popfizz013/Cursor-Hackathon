@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PortfolioContainer from './components/portfolio/PortfolioContainer.jsx';
+import StarBackground from './components/background/StarBackground.jsx';
 import useResponsive from './hooks/useResponsive.jsx';
 import './styles/App.css';
 
@@ -32,7 +33,7 @@ function App({ onReady }) {
 			<div className="app-loading">
 				<div className="loading-spinner">
 					<div className="spinner"></div>
-					<p>Initializing 3D Globe...</p>
+					<p>Loading portfolio...</p>
 				</div>
 			</div>
 		);
@@ -40,6 +41,7 @@ function App({ onReady }) {
 
 	return (
 		<div className="app">
+			<StarBackground />
 			<PortfolioContainer deviceType={deviceType} onScrollChange={handleSectionChange} />
 		</div>
 	);

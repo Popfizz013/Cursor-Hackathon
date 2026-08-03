@@ -321,12 +321,12 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
 
 			{/* Portfolio sections */}
 			<div className="portfolio-sections">
-				<IntroSection 
-					data={portfolioData.intro} 
+				<IntroSection
+					data={portfolioData.intro}
 					deviceType={deviceType}
 					isActive={currentSection === 0}
 				/>
-        
+
 				<SkillsSection
 					data={portfolioData.skills}
 					deviceType={deviceType}
