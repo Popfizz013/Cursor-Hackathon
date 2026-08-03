@@ -1,7 +1,11 @@
-/* Globe interlude — an empty full-viewport stage between Skills and
-   Experience. pointer-events: none so drags fall through to the globe's
-   hotspot (the fixed backdrop sits beneath the section layer). */
-.globe-section {
+/* Globe interlude — the globe's own stage between Skills and Experience.
+   400vh tall: the extra 300vh is the scroll runway that scrubs the camera
+   flight (Ottawa dive → hop to Victoria → pull out). Experience can't be
+   reached until the runway — and therefore the animation — is complete.
+   pointer-events: none so drags fall through to the globe's hotspot. */
+.section.globe-section {
+  height: 400vh;
+  min-height: 400vh;
   pointer-events: none;
 }
 

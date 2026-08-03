@@ -8,16 +8,54 @@ const modelPath = `${process.env.PUBLIC_URL}/models/earth_cartoon.glb`;
 
 // One pose per portfolio section; y advances so the globe keeps turning
 // forward as the visitor scrolls down the page. Index 2 is the globe's own
-// interlude — the hero framing the visitor sees first.
+// interlude, where scroll scrubs the camera flight below instead.
 const SECTION_ROTATIONS = [
 	{ x: 0.15, y: Math.PI / 5, z: 0 },        // intro (hidden)
 	{ x: 0, y: Math.PI / 4, z: 0 },           // skills (hidden)
-	{ x: 0.15, y: Math.PI / 5, z: 0 },        // globe interlude — hero pose
+	{ x: 0.15, y: Math.PI / 5, z: 0 },        // globe interlude (flight start)
 	{ x: Math.PI / 6, y: Math.PI / 2, z: 0 }, // experience
 	{ x: -Math.PI / 4, y: Math.PI, z: 0 },    // projects
 	{ x: 0.1, y: Math.PI * 4 / 3, z: 0 },     // education
 	{ x: Math.PI / 8, y: Math.PI * 5 / 3, z: 0 } // contact
 ];
+
+const INTERLUDE_SECTION = 2;
+const DEFAULT_CAMERA_Z = 3;
+
+// The interlude flight, scrubbed by progress through the 400vh runway:
+// dive toward Ottawa, hop west to Victoria while pulling back, then a full
+// pull-out that hands off to the Experience pose (so the post-interlude
+// backdrop continues seamlessly). Poses aim the cartoon continents, not
+// real geodesy — tuned by eye against the GLB.
+const FLIGHT_KEYFRAMES = [
+	{ p: 0, x: 0.15, y: Math.PI / 5, z: 0, camZ: 3 },   // wide hero framing
+	{ p: 0.38, x: 0.5, y: 0.35, z: 0, camZ: 1.7 },      // slow dive: Ottawa
+	{ p: 0.72, x: 0.55, y: 1.2, z: 0, camZ: 2.3 },      // hop west: Victoria
+	{ p: 1, x: Math.PI / 6, y: Math.PI / 2, z: 0, camZ: 3.4 } // full pull-out
+];
+
+const smoothstep = (t) => t * t * (3 - 2 * t);
+
+const sampleFlight = (progress) => {
+	const frames = FLIGHT_KEYFRAMES;
+	let a = frames[0];
+	let b = frames[frames.length - 1];
+	for (let i = 0; i < frames.length - 1; i++) {
+		if (progress >= frames[i].p && progress <= frames[i + 1].p) {
+			a = frames[i];
+			b = frames[i + 1];
+			break;
+		}
+	}
+	const span = b.p - a.p || 1;
+	const t = smoothstep((progress - a.p) / span);
+	return {
+		x: a.x + (b.x - a.x) * t,
+		y: a.y + (b.y - a.y) * t,
+		z: a.z + (b.z - a.z) * t,
+		camZ: a.camZ + (b.camZ - a.camZ) * t
+	};
+};
 
 // Low-poly stand-in: rendered on mobile, and as the Suspense fallback
 // while the GLB streams in on desktop/tablet.
@@ -36,6 +74,15 @@ const SimpleGlobe = ({ modelScale }) => (
 
 const DetailedGlobe = ({ modelScale, deviceType }) => {
 	const { scene } = useGLTF(modelPath);
+	const glassRef = useRef();
+
+	// The glass shell reads as sheen at a distance but fogs the surface at
+	// close range — hide it while the flight is diving.
+	useFrame((state) => {
+		if (glassRef.current) {
+			glassRef.current.visible = state.camera.position.z > 2.05;
+		}
+	});
 
 	const clonedScene = useMemo(() => {
 		if (!scene) return null;
@@ -79,7 +126,7 @@ const DetailedGlobe = ({ modelScale, deviceType }) => {
 				<primitive object={clonedScene} scale={modelScale} position={[0, 0, 0]} />
 			)}
 			{/* Glass shell — the planet sealed in a marble */}
-			<mesh scale={modelScale * 1.08} renderOrder={2}>
+			<mesh ref={glassRef} scale={modelScale * 1.08} renderOrder={2}>
 				<sphereGeometry args={[1, 32, 32]} />
 				<MeshTransmissionMaterial
 					thickness={0.18}
@@ -107,21 +154,55 @@ const Globe3D = ({ deviceType, section, progress, dragRef, reducedMotion }) => {
 	const groupRef = useRef();
 	const baseRotationRef = useRef({ x: 0.15, y: Math.PI / 5, z: 0 });
 	const spinRef = useRef(0);
+	const runwayElRef = useRef(null);
 
 	const modelScale = useMemo(() => (
 		deviceType === 'mobile' ? 0.65 : deviceType === 'tablet' ? 0.85 : 1.0
 	), [deviceType]);
 
-	useFrame((_, delta) => {
+	// Progress through the interlude's scroll runway: 0 when its top reaches
+	// the viewport top, 1 when its bottom meets the viewport bottom.
+	const measureRunway = () => {
+		if (!runwayElRef.current || !runwayElRef.current.isConnected) {
+			runwayElRef.current = document.querySelector('.globe-section');
+		}
+		const el = runwayElRef.current;
+		if (!el) return 0;
+		const rect = el.getBoundingClientRect();
+		const span = rect.height - window.innerHeight;
+		if (span <= 0) return 0;
+		return Math.min(Math.max(-rect.top / span, 0), 1);
+	};
+
+	useFrame((state, delta) => {
 		if (!groupRef.current) return;
 
-		const pose = SECTION_ROTATIONS[section] || SECTION_ROTATIONS[0];
-		const drift = reducedMotion ? 0 : progress;
-		const target = {
-			x: pose.x + drift * 0.2,
-			y: pose.y + drift * 0.5,
-			z: pose.z + drift * 0.1
-		};
+		let target;
+		let cameraTargetZ = DEFAULT_CAMERA_Z;
+
+		if (section === INTERLUDE_SECTION) {
+			// Scroll scrubs the flight; the damped spring below keeps it silky.
+			const flight = sampleFlight(measureRunway());
+			target = { x: flight.x, y: flight.y, z: flight.z };
+			if (!reducedMotion) {
+				cameraTargetZ = flight.camZ;
+			}
+		} else {
+			const pose = SECTION_ROTATIONS[section] || SECTION_ROTATIONS[0];
+			const drift = reducedMotion ? 0 : progress;
+			target = {
+				x: pose.x + drift * 0.2,
+				y: pose.y + drift * 0.5,
+				z: pose.z + drift * 0.1
+			};
+		}
+
+		state.camera.position.z = THREE.MathUtils.damp(
+			state.camera.position.z,
+			cameraTargetZ,
+			6,
+			delta
+		);
 
 		// Damped spring toward the section pose — settles, never snaps.
 		const base = baseRotationRef.current;
@@ -142,8 +223,9 @@ const Globe3D = ({ deviceType, section, progress, dragRef, reducedMotion }) => {
 			offsetY = drag.y;
 		}
 
-		// Phones get a slow ambient spin instead of drag.
-		if (deviceType === 'mobile' && !reducedMotion) {
+		// Phones get a slow ambient spin instead of drag — paused during the
+		// interlude so it doesn't fight the scripted flight.
+		if (deviceType === 'mobile' && !reducedMotion && section !== INTERLUDE_SECTION) {
 			spinRef.current += delta * 0.12;
 		}
 
