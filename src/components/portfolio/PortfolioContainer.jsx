@@ -22,8 +22,8 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
 	const portfolioData = useMemo(() => ({
 		intro: {
 			title: "Liam Degand",
-			subtitle: "Computer Science Student & Full-Stack Developer",
-			description: "Passionate about technology and software development. Currently pursuing a Bachelor of Science in Computer Science at the University of Victoria, with hands-on experience in full-stack development, data analysis, and emerging technologies.",
+			subtitle: "Computer Science Student",
+			description: "Computer science student at the University of Victoria, currently researching robotics security in ROS 2 with the ACIS Lab. Previously built staff-portal features and NLP tooling at the National Research Council, and led the communication protocol for a student-built satellite.",
 			location: "Victoria, BC, Canada",
 			email: "degandliam013@gmail.com",
 			phone: "1 (819) 664-4427",

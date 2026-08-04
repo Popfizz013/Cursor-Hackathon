@@ -21,7 +21,7 @@ const IntroSection = forwardRef(({ data }, ref) => {
 						</div>
 						<div className="feature-item">
 							<h4>Research & Innovation</h4>
-							<p>Working on satellite communication protocols</p>
+							<p>Robotics security research in ROS 2</p>
 						</div>
 					</div>
 				</div>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="LD">
+  <rect width="64" height="64" rx="14" fill="#0B1D3B"/>
+  <!-- Letterforms are drawn as paths, not text, so the mark renders
+       identically everywhere with no dependency on installed fonts. -->
+  <path d="M8 17H16V39H28V47H8Z" fill="#4DA1FF"/>
+  <path fill-rule="evenodd" d="M33 17H41A15 15 0 0 1 41 47H33ZM41 25H42A7 7 0 0 1 42 39H41Z" fill="#4DA1FF"/>
+</svg>
