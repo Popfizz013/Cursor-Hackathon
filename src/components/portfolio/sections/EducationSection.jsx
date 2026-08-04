@@ -48,19 +48,6 @@ const EducationSection = forwardRef(({ data, isActive }, ref) => {
 					)}
 				</div>
 
-				<div className="certifications">
-					<h3>Certifications & Security Clearance</h3>
-					<div className="cert-grid">
-						<div className="cert-item">
-							<div className="cert-icon">🔒</div>
-							<div className="cert-details">
-								<h4>Reliability Status</h4>
-								<p>Security screening completed for work with protected information (Apr 2025 – Apr 2035)</p>
-								<span className="cert-status">Active</span>
-							</div>
-						</div>
-					</div>
-				</div>
 			</div>
 		</section>
 	);

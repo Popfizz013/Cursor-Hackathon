@@ -58,6 +58,17 @@ const ProjectsSection = forwardRef(({ data, isActive }, ref) => {
 									</div>
 								</div>
 							)}
+
+							{project.repo && (
+								<a
+									className="project-repo"
+									href={project.repo}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									View repository
+								</a>
+							)}
 						</div>
 					))}
 				</div>

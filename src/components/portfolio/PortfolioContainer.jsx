@@ -45,48 +45,73 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
 					skills: ["HTML", "CSS", "Node.js", "React"]
 				},
 				{
+					name: "Cybersecurity",
+					skills: ["UDP", "TCP/IP", "Penetration Testing", "TryHackMe", "HackTheBox"]
+				},
+				{
+					name: "Cloud Platforms",
+					skills: ["AWS", "Azure", "CI/CD", "Docker", "Kubernetes"]
+				},
+				{
 					name: "Operating Systems",
 					skills: ["Linux", "MS Windows"]
 				},
 				{
+					name: "Productivity Tools",
+					skills: ["MS Office", "Google Suite", "Slack", "Trello"]
+				},
+				{
 					name: "Software & Tools",
-					skills: ["VS Code", "Microchip Studio", "Apache Airflow", "MongoDB", "AWS", "Azure", "GNU Radio", "STM32 Cube IDE"]
+					skills: ["VS Code", "Microchip Studio", "Apache Airflow", "MongoDB", "GNU Radio", "STM32 Cube IDE"]
 				}
 			]
 		},
 		experience: [
 			{
 				id: 1,
-				company: "University of Victoria",
-				position: "Teaching Assistant",
+				company: "ACIS Lab",
+				position: "Robotics Security Intern",
 				duration: "Sept 2025 – Present",
 				location: "Victoria, BC",
-				description: "Assisting Dr. Yan with teaching CSC105 Computers and Information Processing class. Responsible for directing labs twice a week as well as grading and invigilating exams throughout the semester.",
+				description: "Researching security in ROS 2 with a focus on the DDS and SROS2 frameworks, and quantifying what hardening a robotic system actually costs at runtime.",
+				details: [
+					"Designed experiments comparing unsecured vs. encrypted communication for data protection and access control",
+					"Configured SROS2 security policies, keystores, and enclaves",
+					"Simulated command injection attacks on robotic systems and evaluated mitigation strategies",
+					"Measured latency overhead of security mechanisms and analyzed performance trade-offs"
+				],
+				technologies: ["ROS 2", "DDS", "SROS2", "Linux", "Penetration Testing"]
+			},
+			{
+				id: 2,
+				company: "University of Victoria",
+				position: "Teaching Assistant",
+				duration: "Sept 2025 – April 2026",
+				location: "Victoria, BC",
+				description: "Assisting Dr. Yu Yan and Prashanti Priya Angara with teaching the CSC105 Computers and Information Processing class. Responsible for directing labs twice a week as well as grading and invigilating exams throughout the semester.",
 				details: [
 					"Topics include microcomputers, word processing, spreadsheets, database systems, communication, networks, and Python programming",
 					"Managing lab sessions and student assessments"
 				],
-				technologies: ["Python", "Database Systems", "Computer Fundamentals"],
-				globeRotation: { x: 0, y: Math.PI / 4, z: 0 }
+				technologies: ["Python", "Database Systems", "Computer Fundamentals"]
 			},
 			{
-				id: 2,
+				id: 3,
 				company: "National Research Council",
 				position: "Full Stack Developer Co-op (Hybrid)",
 				duration: "May 2025 – Sept 2025",
 				location: "Ottawa, ON",
-				description: "Added new features, debugged and triaged the staff portal. Improved an existing NLP model by applying a multi-task approach using PyTorch and Pandas.",
+				description: "Added new features, debugged and triaged the staff portal my team was building in house. Improved an existing NLP model by applying a multi-task approach using PyTorch and Pandas.",
 				details: [
 					"Developed features using MUI, React, and Node.js for staff portal",
 					"Enhanced middleware functionality with C# connected to SQL database",
 					"Researched and implemented multi-task NLP model improvements",
 					"Tested accuracy using Python libraries PyTorch and Pandas"
 				],
-				technologies: ["React", "Node.js", "C#", "SQL", "Python", "PyTorch", "Pandas", "MUI"],
-				globeRotation: { x: Math.PI / 6, y: Math.PI / 2, z: 0 }
+				technologies: ["React", "Node.js", "C#", "SQL", "Python", "PyTorch", "Pandas", "MUI"]
 			},
 			{
-				id: 3,
+				id: 4,
 				company: "Advanced Symbolics",
 				position: "Support Engineer Intern (Remote)",
 				duration: "May 2023 – Aug 2023",
@@ -97,13 +122,56 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
 					"Created Python scripts to search databases for triaging and bug solving",
 					"Streamlined tasks for smoother workflow processes"
 				],
-				technologies: ["Python", "Apache Airflow", "AWS", "MongoDB"],
-				globeRotation: { x: -Math.PI / 4, y: Math.PI, z: 0 }
+				technologies: ["Python", "Apache Airflow", "AWS", "MongoDB"]
+			},
+			{
+				id: 5,
+				company: "The Bear Bierhause · La Station · La Favorita · Le Forum",
+				position: "Cook",
+				duration: "Aug 2021 – Aug 2024",
+				location: "BC, QC & ON, Canada",
+				description: "Multitasked by staying attentive to incoming orders while managing dish preparation in a fast-paced, high-intensity environment, communicating effectively as a team to synchronize meal components.",
+				details: [
+					"The Bear Bierhause — Tofino, BC (May 2024 – Aug 2024)",
+					"La Station Restaurant — Hull, QC (May 2023 – Aug 2023)",
+					"La Favorita Restaurant — Ottawa, ON (Dec 2021 – May 2022)",
+					"Le Forum Restaurant — Gatineau, QC (Aug 2021 – Nov 2021, May 2022 – Sept 2022)"
+				]
 			}
 		],
 		projects: [
 			{
 				id: 1,
+				title: "EchoShield",
+				organization: "UVic Hacks Startup Hackathon",
+				duration: "Feb 2026",
+				repo: "https://github.com/Popfizz013/EchoShield",
+				description: "A full-stack AI safety lab that classifies prompts as safe or unsafe, then runs an adversarial mutation search to find the smallest change that flips the verdict.",
+				details: [
+					"Built a three-tier architecture: React/Vite frontend, Node.js middleware, and a Python inference backend",
+					"Implemented the Echogram search that hunts for minimal prompt modifications which bypass a guardrail",
+					"Visualized the search as nodes, edges, and the mutation path to a potential bypass",
+					"Supported multiple guardrail model IDs with fallback behaviour when model access is unavailable"
+				],
+				technologies: ["TypeScript", "React", "Vite", "Node.js", "Express", "Python", "Docker"]
+			},
+			{
+				id: 2,
+				title: "SecureUSB",
+				organization: "UVEC Hackathon · Systems Architect & Team Lead",
+				duration: "Oct 2025",
+				repo: "https://github.com/Popfizz013/SecureUSB",
+				description: "A cross-platform CLI that detects USB drives on insertion and locks them behind password-derived AES-256-GCM encryption. Led a team of three as systems architect.",
+				details: [
+					"Real-time USB insertion and removal detection across Windows and macOS",
+					"Password authentication with PBKDF2 key derivation over salted, hashed keys",
+					"AES-256-GCM batch encryption with SHA-256 integrity verification and secure deletion of originals",
+					"Retry-limited unlock, per-device UUID metadata, and multi-device management"
+				],
+				technologies: ["Python", "AES-256-GCM", "PBKDF2", "SHA-256", "Shell", "PowerShell"]
+			},
+			{
+				id: 3,
 				title: "MARMOTSAT Communication Protocol",
 				organization: "UVic Satellite Club",
 				duration: "Jan 2025 – Present",
@@ -113,11 +181,10 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
 					"Leading team of 7 students",
 					"Collaborating with University of Victoria's Center for Aerospace Research"
 				],
-				technologies: ["UDP", "Communication Protocols", "Team Leadership"],
-				globeRotation: { x: 0, y: Math.PI / 3, z: 0 }
+				technologies: ["UDP", "Communication Protocols", "Team Leadership"]
 			},
 			{
-				id: 2,
+				id: 4,
 				title: "AWS DeepRacer AI Optimization",
 				organization: "University of Victoria",
 				duration: "Nov 2024",
@@ -127,8 +194,7 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
 					"Implemented reward function optimization",
 					"Fixed last-minute bugs and issues"
 				],
-				technologies: ["AWS", "AI/ML", "Git", "Python"],
-				globeRotation: { x: Math.PI / 8, y: Math.PI / 1.5, z: 0 }
+				technologies: ["AWS", "AI/ML", "Git", "Python"]
 			}
 		],
 		education: {
@@ -146,7 +212,9 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
 			description: "I'm always interested in new opportunities and exciting projects. Whether you have a question about my work or want to discuss a potential collaboration, I'd love to hear from you.",
 			email: "degandliam013@gmail.com",
 			phone: "1 (819) 664-4427",
-			location: "Victoria, BC, Canada"
+			location: "Victoria, BC, Canada",
+			github: "https://github.com/Popfizz013",
+			linkedin: "https://www.linkedin.com/in/liam-degand-800592276/"
 		}
 	}), []);
 
