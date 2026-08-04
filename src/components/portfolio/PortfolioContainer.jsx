@@ -174,7 +174,7 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
 				id: 3,
 				title: "MARMOTSAT Communication Protocol",
 				organization: "UVic Satellite Club",
-				duration: "Jan 2025 – Present",
+				duration: "Jan 2025 – Oct 2025",
 				description: "Leading a team of 7 to implement a communication protocol designed for satellite launch in collaboration with UVic's Center for Aerospace Research.",
 				details: [
 					"Designed UDP-based communication protocol",
