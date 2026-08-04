@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import Globe3D from './Globe3D.jsx';
+import Globe3D, { FLIGHT_STOPS } from './Globe3D.jsx';
 import './GlobeBackdrop.css';
 
 const DRAG_SENSITIVITY = 0.005;
@@ -22,6 +22,7 @@ const GlobeBackdrop = ({ section, progress, deviceType }) => {
 	const dragRef = useRef({ x: 0, y: 0, active: false });
 	const lastPointerRef = useRef({ x: 0, y: 0 });
 	const [reducedMotion, setReducedMotion] = useState(false);
+	const [activeStop, setActiveStop] = useState(null);
 
 	useEffect(() => {
 		const query = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -35,6 +36,8 @@ const GlobeBackdrop = ({ section, progress, deviceType }) => {
 	// Anchor the fixed wrapper to the interlude while approaching it: offset
 	// by the section's top edge (never negative), so it rides the page until
 	// the runway starts, then pins. Direct style mutation — no re-renders.
+	// The same pass picks the city card to show, so the overlay needs no
+	// listener of its own and only re-renders when the active stop changes.
 	useEffect(() => {
 		const place = () => {
 			frameRef.current = null;
@@ -43,8 +46,22 @@ const GlobeBackdrop = ({ section, progress, deviceType }) => {
 				runwayElRef.current = document.querySelector('.globe-section');
 			}
 			const el = runwayElRef.current;
-			const top = el ? Math.max(el.getBoundingClientRect().top, 0) : 0;
+			const rect = el ? el.getBoundingClientRect() : null;
+			const top = rect ? Math.max(rect.top, 0) : 0;
 			wrapperRef.current.style.transform = `translateY(${top}px)`;
+
+			let stop = null;
+			if (rect) {
+				const span = rect.height - window.innerHeight;
+				if (span > 0) {
+					const p = Math.min(Math.max(-rect.top / span, 0), 1);
+					stop = FLIGHT_STOPS.find((s) => p >= s.from && p <= s.to) || null;
+				}
+			}
+			setActiveStop((prev) => {
+				const next = stop ? stop.id : null;
+				return prev === next ? prev : next;
+			});
 		};
 
 		const schedule = () => {
@@ -126,6 +143,28 @@ const GlobeBackdrop = ({ section, progress, deviceType }) => {
 				onPointerUp={handlePointerEnd}
 				onPointerCancel={handlePointerEnd}
 			/>
+
+			{/* City cards — one per flight stop, shown while the camera holds.
+			    Content mirrors the Experience section below, so the whole
+			    backdrop stays aria-hidden rather than announcing it twice. */}
+			{FLIGHT_STOPS.map((stop) => (
+				<div
+					key={stop.id}
+					className={`globe-card${activeStop === stop.id ? ' globe-card--visible' : ''}`}
+				>
+					<p className="globe-card__place">{stop.place}</p>
+					{stop.roles.map((role) => (
+						<div key={role.org} className="globe-card__role">
+							<h3 className="globe-card__title">{role.title}</h3>
+							<p className="globe-card__org">
+								{role.org}
+								<span className="globe-card__when">{role.when}</span>
+							</p>
+							<p className="globe-card__detail">{role.detail}</p>
+						</div>
+					))}
+				</div>
+			))}
 		</div>
 	);
 };
