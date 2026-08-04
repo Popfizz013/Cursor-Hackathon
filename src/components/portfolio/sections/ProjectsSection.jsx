@@ -8,7 +8,7 @@ const ProjectsSection = forwardRef(({ data, isActive }, ref) => {
 		<section 
 			ref={ref}
 			className={`projects-section section ${isActive ? 'active' : ''}`}
-			data-section-index={3}
+			data-section-index={4}
 			style={{ opacity: isActive ? 1 : 0.95 }}
 		>
 			<div className="section-content">
@@ -57,6 +57,17 @@ const ProjectsSection = forwardRef(({ data, isActive }, ref) => {
 										))}
 									</div>
 								</div>
+							)}
+
+							{project.repo && (
+								<a
+									className="project-repo"
+									href={project.repo}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									View repository
+								</a>
 							)}
 						</div>
 					))}

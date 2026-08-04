@@ -1,3 +1,14 @@
+/* Globe interlude — the globe's own stage between Skills and Experience.
+   400vh tall: the extra 300vh is the scroll runway that scrubs the camera
+   flight (Ottawa dive → hop to Victoria → pull out). Experience can't be
+   reached until the runway — and therefore the animation — is complete.
+   pointer-events: none so drags fall through to the globe's hotspot. */
+.section.globe-section {
+  height: 400vh;
+  min-height: 400vh;
+  pointer-events: none;
+}
+
 /* Shared Section Styles */
 .section {
   min-height: 100vh;
@@ -451,6 +462,35 @@
   cursor: pointer;
 }
 
+/* Repo link — shown only for projects that declare a `repo` URL */
+.project-repo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 20px;
+  border: 1px solid rgba(77, 161, 255, 0.35);
+  background: rgba(77, 161, 255, 0.1);
+  color: #9ecfff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.project-repo::after {
+  content: '↗';
+  font-size: 0.9em;
+}
+
+.project-repo:hover,
+.project-repo:focus-visible {
+  background: rgba(77, 161, 255, 0.2);
+  border-color: rgba(77, 161, 255, 0.6);
+  transform: translateY(-1px);
+}
+
 .tech-tag:hover {
   background: rgba(135, 206, 235, 0.2);
   border-color: rgba(135, 206, 235, 0.5);
@@ -499,8 +539,7 @@
 }
 
 .projects-section .project-title,
-.education-section .degree-title,
-.certifications h3 {
+.education-section .degree-title {
   font-size: 1.8rem;
   font-weight: 600;
   color: #ffffff;
@@ -527,16 +566,15 @@
 }
 
 /* Education Section */
+/* Short section — let it size to its content instead of reserving a whole
+   viewport, which otherwise pools as dead space before Contact. */
+.education-section {
+  min-height: 0;
+  padding-bottom: 6rem;
+}
+
 .education-card {
   margin-bottom: 1.25rem;
-}
-
-.certifications {
-  margin-top: 1.25rem;
-}
-
-.certifications h3 {
-  margin: 0 0 1rem 0;
 }
 
 .job-visual {
@@ -1089,6 +1127,15 @@
   font-size: 1.5rem;
 }
 
+/* An <svg> with no width/height defaults to 100%, so the glyphs stretched
+   edge-to-edge and their square corners spilled past the round badge.
+   Inset them so every icon sits inside its circle. */
+.contact-icon svg {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
 .email-icon {
   background: linear-gradient(45deg, #87ceeb, #add8e6);
   color: #0c0c0c;
@@ -1102,6 +1149,11 @@
 .github-icon {
   background: linear-gradient(45deg, #333, #666);
   color: white;
+}
+
+.phone-icon {
+  background: linear-gradient(45deg, #4da1ff, #6aa7ff);
+  color: #ffffff;
 }
 
 .contact-card h4 {
@@ -1217,6 +1269,21 @@
 .contact-footer p {
   margin: 0.5rem 0;
   font-size: 0.9rem;
+}
+
+.footer-built {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.claude-mark {
+  width: 1.05em;
+  height: 1.05em;
+  flex-shrink: 0;
+  color: #d97757;
 }
 
 /* Contact Section Lorem content */

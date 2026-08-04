@@ -25,19 +25,18 @@
   "author": "Popfizz013",
   "license": "MIT",
   "dependencies": {
-    "@react-three/drei": "^9.88.13",
-    "@react-three/fiber": "^8.15.11",
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.18.0",
     "framer-motion": "^10.16.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",
     "styled-components": "^6.1.1",
-    "three": "^0.160.1"
+    "three": "^0.185.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
-    "@types/three": "^0.158.3",
     "eslint": "^8.53.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
