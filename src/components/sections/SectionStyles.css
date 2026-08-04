@@ -9,6 +9,17 @@
   pointer-events: none;
 }
 
+/* Phones don't render the globe at all, so collapse its runway — otherwise
+   it leaves 400vh of empty starfield to scroll through. Breakpoint must
+   match useResponsive's isMobile (width < 768) so the two never disagree. */
+@media (max-width: 767.98px) {
+  .section.globe-section {
+    height: 0;
+    min-height: 0;
+    padding: 0;
+  }
+}
+
 /* Shared Section Styles */
 .section {
   min-height: 100vh;

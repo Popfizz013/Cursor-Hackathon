@@ -341,15 +341,21 @@ const PortfolioContainer = ({ onScrollChange, deviceType }) => {
 	return (
 		<div ref={containerRef} className="portfolio-container">
 			{/* Ambient 3D globe — eases toward a per-section pose as you scroll */}
-			<GlobeErrorBoundary>
-				<Suspense fallback={null}>
-					<GlobeBackdrop
-						section={currentSection}
-						progress={scrollProgress}
-						deviceType={deviceType}
-					/>
-				</Suspense>
-			</GlobeErrorBoundary>
+			{/* Phones skip the globe entirely — because GlobeBackdrop is lazy,
+			    not rendering it means the three.js chunk is never fetched and
+			    no WebGL context is created. The interlude's scroll runway is
+			    collapsed to match (see .globe-section in SectionStyles.css). */}
+			{deviceType !== 'mobile' && (
+				<GlobeErrorBoundary>
+					<Suspense fallback={null}>
+						<GlobeBackdrop
+							section={currentSection}
+							progress={scrollProgress}
+							deviceType={deviceType}
+						/>
+					</Suspense>
+				</GlobeErrorBoundary>
+			)}
 
 			{/* Navigation */}
 			<nav className="portfolio-nav">
